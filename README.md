@@ -4,9 +4,9 @@
 We will continue to open-sourced the source files of PaperDaily here to facilitate easy access, downloading, and further research for researchers and enthusiasts.
 
 ## Day318
-[PaperDaily｜Day318](https://github.com/AIGCResearch/Awesome-PaperDaily/tree/main/Day318)
+[PaperDaily｜Day318](./Day318)
 ### Image Generation
-[318-A1.1｜高效图像生成，DiT高效条件控制，散焦模糊控制；内容风格定制化，DiT风格迁移；物体移除与插入，物体移动](https://github.com/AIGCResearch/Awesome-PaperDaily/tree/main/Day318/318-A1.1｜高效图像生成，DiT高效条件控制，散焦模糊控制；内容风格定制化，DiT风格迁移；物体移除与插入，物体移动.md)
+[318-A1.1｜高效图像生成，DiT高效条件控制，散焦模糊控制；内容风格定制化，DiT风格迁移；物体移除与插入，物体移动](./Day318/318-A1.1｜高效图像生成，DiT高效条件控制，散焦模糊控制；内容风格定制化，DiT风格迁移；物体移除与插入，物体移动.md)
 
 [318-A1.2｜中英双语图像生成，虚拟试衣，手部图像生成，统一理解与生成系列（细粒度面部，SSM），图像“标记化”系列](./Day318/318-A1.2｜中英双语图像生成，虚拟试衣，手部图像生成，统一理解与生成系列（细粒度面部，SSM），图像“标记化”系列.md)
 
