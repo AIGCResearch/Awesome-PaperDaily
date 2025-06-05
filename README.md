@@ -1,7 +1,7 @@
 # Awesome-PaperDaily
 **Following the advance of AIGC!!!**
 
-We will continue to open-sourced the source files of PaperDaily here to facilitate easy access, downloading, and further research for researchers and enthusiasts.
+We will continue to open-sourced the source files of PaperDaily here to facilitate easy access, downloading, and further research for researchers  creators and enthusiasts.
 
 ## Day318
 [PaperDaily｜Day318](./Day318)
