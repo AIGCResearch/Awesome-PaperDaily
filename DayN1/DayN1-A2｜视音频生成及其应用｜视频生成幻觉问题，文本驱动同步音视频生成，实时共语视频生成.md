@@ -1,0 +1,80 @@
+# Topic: Video Generation
+## How Confident are Video Models? Empowering Video Models to Express their Uncertainty 
+2025-10-02｜Princeton 
+
+<u>http://arxiv.org/abs/2510.02571v1</u>  
+<u>https://github.com/irom-princeton/s-qubed</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/18.jpg)  
+近年来，生成式视频模型在文本到视频的转换能力上取得了显著进展，广泛应用于多个领域。然而，这些模型存在“幻觉”问题，即在缺乏足够知识时生成与事实不符的视频内容，且无法表达自身的不确定性，带来安全隐患。本文首次提出针对生成式视频模型的不确定性量化（UQ）框架，旨在赋予视频模型表达其预测置信度的能力。该框架包括三个核心贡献：一是设计了基于秩相关的校准评估指标，用于衡量不确定性估计与生成准确性之间的一致性；二是提出了黑箱式不确定性量化方法S-QUBED，利用潜变量建模严格区分输入模糊性引起的不可约不确定性（Aleatoric）和模型知识缺失导致的可约不确定性（Epistemic）；三是构建了包含约4万条视频的UQ基准数据集，促进不确定性量化方法的标准化评测。通过对多个公开视频生成数据集的实验证明，S-QUBED不仅能提供经过校准的总不确定性估计，还有效分解了两类不确定性成分，提升了视频模型的可信度和安全性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/19.jpg)  
+本文提出的S-QUBED方法基于潜变量分解，将视频生成过程拆解为两步：首先从输入文本提示ℓ生成潜变量z，再基于z生成最终视频v。该潜变量z代表对文本提示的具体化，解决了提示模糊性问题。具体方法包括：  
+
+1. **不确定性分解**：利用信息熵将总预测不确定性h(V|ℓ)分解为潜变量不确定性h(Z|ℓ)（Aleatoric，反映输入模糊性）和条件视频生成不确定性h(V|Z)（Epistemic，反映模型知识不足）。  
+2. **Aleatoric不确定性估计**：通过大语言模型（LLM）生成多样化、具体化的潜在文本提示，再将其编码为语义嵌入，利用Von-Mises Fisher（VMF）分布拟合嵌入空间，计算该分布的熵来量化输入提示的模糊性。  
+3. **Epistemic不确定性估计**：针对每个潜变量z，生成多个视频样本并提取视频嵌入，同样用VMF分布拟合视频嵌入，计算条件熵以度量模型在特定潜变量下的知识缺失。通过蒙特卡洛采样对所有z的条件熵求期望，获得整体Epistemic不确定性。  
+该方法为黑箱方案，无需改动视频模型结构，且通过潜变量潜在空间的概率建模，实现了对不确定性的严格且可解释的分解。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/20.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/21.jpg)  
+实验基于两个大规模视频生成数据集VidGen-1M和Panda-70M，采用Cosmos-Predict2作为测试视频模型。首先，设计了基于Kendall秩相关系数的校准评估指标，验证不确定性估计与视频生成准确性（以CLIP语义相似度为主）之间的负相关性，确认CLIP分数是评估视频生成准确性的最佳指标。随后，实验证明S-QUBED计算的总预测不确定性与CLIP准确度显著负相关，表明其不确定性估计具有良好的校准性。进一步分析显示，S-QUBED能有效区分Aleatoric和Epistemic不确定性，两者均与生成准确性呈负相关，验证了方法在不确定性分解上的有效性。视觉示例展示了低不确定性对应高准确度的视频生成，高不确定性则伴随生成内容偏差，体现了模型对自身置信度的合理表达。结果表明，S-QUBED不仅提供了可靠的不确定性量化，还能辅助理解视频模型在不同任务中的表现和局限。
+
+### 通俗易懂  
+S-QUBED的核心思想是让视频生成模型“知道自己不知道”的部分。它先把输入的文字提示转化成一组更具体的“潜在提示”，就像把模糊的描述“猫在做什么”细化成“黑猫在舔爪子”，用来表示文字本身的模糊程度，这部分模糊性带来的不确定性叫做Aleatoric。然后，对于每个具体的潜在提示，模型会生成多个视频样本，通过分析这些视频的差异，来判断模型对这个具体描述的“了解程度”，这部分不确定性叫做Epistemic。通过统计这些潜在提示和生成视频的多样性，S-QUBED能告诉我们模型在生成视频时到底有多“自信”——如果模型对潜在提示的理解很模糊，或者生成的视频差异很大，那它的不确定性就高，说明结果可能不可靠。这个方法不需要改动视频模型本身，只需要多次生成视频并做统计分析，就能帮我们更好地判断视频生成的可信度，避免盲目相信模型的输出。 
+# Topic: Video & Audio Generation
+## Taming Text-to-Sounding Video Generation via Advanced Modality Condition and Interaction 
+2025-10-03｜RUC, Apple 
+
+<u>http://arxiv.org/abs/2510.03117v1</u>  
+<u>https://bridgedit-t2sv.github.io</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/22.jpg)  
+本研究聚焦于文本驱动的同步音视频生成（Text-to-Sounding-Video, T2SV）任务，旨在从文本条件生成具有语义和时间同步的高质量视频及音频。当前主流方法存在两大核心难题：一是共享文本描述同时作为视频和音频条件，导致模态干扰，影响预训练模型的表现；二是跨模态特征交互机制设计不明确，难以保证音视频的语义和时间同步。为此，本文提出了“层级视觉引导字幕”（Hierarchical Visual-Grounded Captioning, HVGC）框架，通过分离视频与音频的纯模态文本描述，消除模态干扰；基于此，设计了BridgeDiT双塔扩散变换器架构，配合创新的双重交叉注意力（Dual Cross-Attention, DCA）机制，实现了音视频之间高效且对称的信息交互。大量实验证明，该方法在多个基准数据集上超越现有最优水平，且通过消融分析验证了各模块的关键作用，推动了T2SV领域的技术进步。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/23.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/24.jpg)  
+本文方法主要包括两大创新模块：  
+
+1. **层级视觉引导字幕框架（HVGC）**：分三阶段生成纯净的模态文本条件。第一阶段由视觉-语言模型生成详细的视频描述，涵盖场景、动作及风格；第二阶段利用语言模型从视频描述中抽取关键的声音相关标签，过滤非声音信息；第三阶段结合视觉上下文和声音标签，生成纯音频描述，避免直接从音频生成字幕时的幻觉和噪声问题，有效消除模态间干扰。  
+2. **BridgeDiT架构与双重交叉注意力融合机制（DCA）**：采用预训练的音视频双塔扩散变换器，保持两塔主体冻结，仅在特定层插入BridgeDiT模块。DCA机制实现音视频特征的双向、非对称交叉注意力操作，视频特征基于音频上下文更新，音频特征基于视频上下文更新，确保语义与时间上的同步。对比其他融合方式（全注意力、自注意力、加性融合及单向交叉注意力），DCA在同步性能上表现最佳。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/25.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/26.jpg)  
+实验在三个公开数据集（AVSync15、VGGSound-SS、Landscape）上进行，涵盖视频质量、音频质量、文本对齐及音视频同步多个指标。结果显示，BridgeDiT在大部分指标上均优于包括独立生成、流水线生成及现有联合生成方法。特别是在音视频同步指标（AV-Align、VA-IB）上取得显著提升，验证了DCA机制的有效性。消融实验进一步表明，HVGC生成的分离文本条件显著优于共享文本或仅用音频大语言模型生成的文本，避免了模态干扰和幻觉问题。此外，不同融合机制对比实验确认DCA的优越性，双向交叉注意力机制在训练过程中持续保持最佳同步性能。用户研究也支持自动评测结果，BridgeDiT在视频质量、音频质量、文本匹配及同步感知上均获得最高评分，体现了良好的实际应用潜力。
+
+### 通俗易懂  
+这项研究的核心是让计算机根据一段文字，生成一个视频和对应的音频，而且视频里的动作和声音要完全同步、协调。为解决之前方法中“一个文字描述同时给视频和音频用，导致两者理解混乱”的问题，研究者设计了一个三步走的“字幕生成”方法。首先，机器看视频生成详细的画面描述；然后，从这段描述里提取出声音相关的关键词；最后结合这两个信息，生成专门描述声音的纯音频字幕。这样，视频和音频各有自己专属的“说明书”，避免了信息混淆。接着，研究团队设计了一个双塔结构的神经网络，里面有个特别的“桥梁”模块，让视频和音频这两个部分能互相“看”和“听”对方的信息，保证它们生成的内容在时间和语义上完美配合。实验表明，这种方法不仅画面和声音质量高，还能做到两者同步，用户评价也很好，说明这种技术在未来制作电影、游戏或虚拟现实场景时非常有用。 
+# Topic: Video & Audio Generation｜Human
+## Input-Aware Sparse Attention for Real-Time Co-Speech Video Generation 
+2025-10-02｜CMU, PAII 
+
+<u>http://arxiv.org/abs/2510.02617v1</u>  
+<u>https://beijia11.github.io/IASA</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/27.jpg)  
+本研究针对基于扩散模型的共语视频生成任务，提出了一种输入感知的稀疏注意力机制及定制蒸馏损失，实现了实时高质量视频合成。传统扩散模型因多步去噪和全注意力机制计算量大，导致生成速度缓慢，难以满足实时需求。现有蒸馏方法直接应用于共语视频生成，虽提升速度却显著降低了关键区域如面部和手部的视觉质量和同步性。本文创新地利用输入的人体姿态信息，设计了输入感知的全局与局部稀疏注意力掩码，聚焦于面部、手部和上半身等关键区域，减少冗余计算同时保持运动连贯性。结合输入感知的蒸馏损失，优先保证面部唇动同步和手势的真实感。实验表明，该方法在多个数据集上实现了13倍于教师模型的加速，且在视觉质量、运动一致性和唇动同步方面均优于现有音频驱动及姿态驱动方法，具备广泛应用潜力。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/28.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/29.jpg)  
+本文方法主要包括以下三个核心模块：  
+
+1. **两阶段生成流水线**：第一阶段通过音频到动作生成器（基于EMAGE框架）将语音转换为密集姿态关键点序列；第二阶段利用条件视频扩散模型，将姿态序列和参考图像编码特征作为输入，合成连贯且身份一致的视频。  
+2. **输入感知稀疏注意力机制**：  
+   - **全局注意力掩码**：基于当前帧与历史帧的姿态相似度，动态选择最相关的K帧参与注意力计算，避免无关帧的冗余计算。  
+   - **局部注意力掩码**：利用刚性变换对齐关键区域（面部、手部、肩膀等），限制跨帧注意力仅在对应局部区域内计算，增强时序一致性。  
+   这两者结合形成结构化稀疏注意力，显著降低计算复杂度。  
+3. **输入感知蒸馏损失设计**：在传统分布匹配蒸馏基础上，引入基于姿态信息的区域加权重建损失，针对面部和手部等关键区域采用特定感知度量（如ArcFace特征距离和LPIPS），提升细节和同步性。整体目标函数结合分布匹配和区域感知损失，兼顾效率和视觉质量。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/30.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/31.jpg)  
+实验在公开的TalkShow数据集和新建的YouTubeTalking数据集上进行，涵盖多说话人、多视角和多背景场景。定量指标包括FID、FVD、SSIM、PSNR、唇动同步度（Sync-C/D）、手部动作质量（HKC/HKD）及帧率（FPS）。结果显示，本文方法在保持甚至提升视觉质量和动作同步性的同时，实现了25.3 FPS的实时生成速度，较教师模型提升13.1倍。与主流音频驱动和姿态驱动方法相比，唇动同步和手势自然度均有显著提升。消融实验表明，输入感知的全局与局部稀疏注意力显著减少计算时间，输入感知蒸馏损失则提升了关键区域的视觉质量和动作连贯性。用户研究进一步验证了生成视频在唇动同步、动作真实感和整体质量上的优越性。长视频生成采用渐进式策略保证时序平滑，尽管存在背景动态和细节手势表现的局限，整体表现优异。
+
+### 通俗易懂  
+这项工作主要解决了让计算机快速生成“说话视频”的问题。传统方法虽然能生成高质量视频，但非常慢，不适合实时应用。研究者发现，人体姿态信息（比如脸部、手部和上半身的位置）可以告诉模型哪些视频区域更重要。于是，他们设计了一种“输入感知的稀疏注意力”，让模型只关注动作关键的部分和相关的历史帧，避免浪费时间在背景或无关区域上。除此之外，他们还设计了特别的训练方法，让模型在学习时重点关注嘴唇和手部动作的准确性，从而生成更自然、同步的说话视频。最终，这种方法不仅让视频生成速度提升了十几倍，还保证了视频质量和动作的协调，让生成的视频看起来更真实、更流畅，非常适合需要实时互动的场景，比如虚拟助手或远程教学。 
