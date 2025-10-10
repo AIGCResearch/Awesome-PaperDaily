@@ -3,6 +3,9 @@
 
 We will continue to open-sourced the source files of PaperDaily here to facilitate easy access, downloading, and further research for researchers, creators and enthusiasts.
 
+## DayN1
+[PaperDaily｜DayN1](./DayN1)
+
 ## Day318
 [PaperDaily｜Day318](./Day318)
 ### Image Generation
