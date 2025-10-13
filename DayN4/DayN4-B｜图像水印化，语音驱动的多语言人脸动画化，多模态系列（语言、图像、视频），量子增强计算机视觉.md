@@ -1,0 +1,197 @@
+# Topic: Image Generation｜Safety 
+## SpecGuard: Spectral Projection-based Advanced Invisible Watermarking 
+2025-10-08｜SKKU｜ICCV 2025 
+
+<u>http://arxiv.org/abs/2510.07302v1</u>  
+<u>https://github.com/inzamamulDU/SpecGuard_ICCV_2025</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/211.jpg)  
+本文提出了一种名为SpecGuard的先进隐形水印技术，旨在解决传统水印方法在面对图像变形、再生成和对抗攻击时的鲁棒性不足问题。SpecGuard通过将水印信息嵌入图像隐藏卷积层的高频谱域，实现了水印的隐蔽性和鲁棒性的平衡。该方法利用小波变换分解图像频率分量，并结合快速傅里叶变换（FFT）进行频谱投影，有效地将水印信息嵌入高频带，增强了对各种图像处理和攻击的抵抗力。通过引入Parseval定理作为可学习阈值，SpecGuard在保证水印隐形的同时，实现了高准确度的水印提取，显著优于现有主流隐形水印技术。该技术不仅提升了数字内容的安全性和真实性验证能力，还为实际应用中的版权保护提供了强有力的技术支撑。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/212.jpg) 
+  
+SpecGuard的核心架构包括编码器和解码器两个模块，具体方法如下：  
+
+1. **小波投影（Wavelet Projection）**：利用小波变换将输入图像分解为多尺度、多方向的频率子带，特别关注高频子带（HH），以捕捉图像细节和边缘信息。  
+2. **频谱投影（Spectral Projection）**：对高频子带进行快速傅里叶变换，转换到频谱域，利用对称扩展确保FFT结果为实数，便于后续操作。  
+3. **水印嵌入**：将二进制水印消息映射到高频频谱系数上，采用径向掩码限制嵌入区域，结合强度因子控制嵌入强度，保证水印隐形且具备鲁棒性。  
+4. **逆变换重构**：通过逆小波变换和逆频谱投影，将频域嵌入的水印信息转换回空间域，生成水印图像。  
+5. **解码器设计**：对水印图像进行相同的小波和频谱投影处理，利用可学习阈值（基于Parseval定理）对嵌入位进行判别，有效恢复水印信息。  
+6. **损失函数**：结合编码器和解码器的损失，平衡水印的隐形性和提取准确性，通过端到端训练优化网络参数。  
+该方法通过多层卷积网络细化频域特征，确保水印在多种攻击下依然可被准确提取。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/214.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/215.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/216.jpg)  
+实验部分基于MS-COCO数据集进行训练，并在DiffusionDB、DALL·E3等多个数据集上测试，验证了SpecGuard的性能。评估指标涵盖水印隐形性（PSNR、SSIM、FID）、恢复准确率（BRA）及对多种攻击的鲁棒性。SpecGuard在不同分辨率（256×256至1024×1024）下均表现出极高的图像质量保持能力，PSNR最高达42.89，SSIM接近0.99，且水印恢复准确率高达99%。与当前多种先进水印技术对比，SpecGuard在保持视觉质量的同时，显著提高了对旋转、裁剪、模糊、噪声、JPEG压缩等多种图像处理及对抗样本攻击的鲁棒性。其强大的鲁棒性还体现在面对图像再生成攻击（如StableDiffusion多次去噪）和社交平台上传下载后的水印检测中均表现优异，证明了其适用性和实用价值。消融实验进一步验证了小波投影与频谱投影结合的有效性。
+
+### 通俗易懂  
+SpecGuard的核心思想是把秘密信息藏在图片的“声音”里，而不是直接藏在图片的“颜色”里。它先用一种叫小波变换的技术，把图片拆成不同频率的部分，类似于把音乐分成低音和高音。SpecGuard选择了高音部分，因为这里藏信息不容易被察觉。接着，它用快速傅里叶变换把这些高音部分转换成频谱，就像把声音变成频率图谱。然后，秘密信息被巧妙地嵌入到这个频率图谱的特定区域，而且只在图片中央附近的小范围内隐藏，这样即使图片被裁剪或旋转，秘密信息依然能被找到。最后，系统通过逆过程把频谱变回图片，看起来和原图几乎一样。解码时，系统再用同样的方法找到这些隐藏的信息。为了让隐藏的信息既看不见又能被准确找回，SpecGuard还学会了一个“门槛值”，用来判断频谱中的哪些部分代表了秘密信息。整体来说，SpecGuard就像是在图片的频率世界里藏了一把钥匙，只有知道方法的人才能找到它，即使图片被修改也难以破坏这把钥匙。 
+# Topic: Video & Audio Generation｜Human 
+## A Bridge from Audio to Video: Phoneme-Viseme Alignment Allows Every Face to Speak Multiple Languages 
+2025-10-08｜XDU 
+
+<u>http://arxiv.org/abs/2510.06612v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/183.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/184.jpg)  
+本研究聚焦于语音驱动的多语言人脸动画合成（TFS），旨在解决现有模型在非英语语言上的表现不佳问题。传统TFS模型因训练数据主要集中于英语，导致在处理其他语言时出现音素与口型（音素-视觉对应）不匹配、音视频不同步以及面部表情僵硬等问题。为此，本文提出了MuEx框架，基于音素（phoneme）和视觉口型单元（viseme）构建跨语言的通用中间表示，打破语言限制，实现多语言下的自然口型同步。核心创新包括：1）提出音素-视觉口型对齐机制（PV-Align），通过对抗学习和聚类增强音素与视觉口型之间的跨模态对应关系，提升多语言泛化能力；2）设计音素引导的专家混合架构（PG-MoE），动态路由选择专家模块，适应不同语言的发音特征。研究同时构建了包含12种语言、95小时高质量视频的多语言基准数据集（MTFB），验证了MuEx在多语言同步和未见语言零样本泛化上的显著优势。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/185.jpg)  
+MuEx方法主要包含三大模块：  
+1）**音素-视觉口型原型构建与对齐**：将音频中的音素特征和视频中的视觉口型特征分别聚类为固定数量的原型，作为语言无关的通用锚点。通过最大化原型间的互信息，抑制原始特征层的噪声相关性，实现跨语言的稳定映射。  
+2）**伪音素引导的专家混合路由（PG-MoE）**：利用伪音素标签引导专家模块的稀疏激活，结合内容特征动态选择最合适的专家，提升模型对多语言发音差异的适应能力。路由损失确保专家使用均衡且与音素对应。  
+3）**联合训练目标**：结合原型对齐损失、专家路由损失和视频生成损失（包括像素、感知和时间连续性），实现音频到视频的端到端优化。整体架构通过语言无关的音素-视觉口型映射和专家路由机制，实现多语言的自然口型生成和同步。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/186.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/187.jpg)  
+实验基于新构建的MTFB数据集，涵盖12种语言和多种语言家族，包括声调语言和非声调语言。通过多指标评估（FVD、Sync-C、LSE-D和TMDC），MuEx在多语言口型同步和视频质量上均显著优于六个先进基线方法。特别是在音频-口型同步（Sync-C）和口型动态一致性（TMDC）指标上，MuEx分别提升3.9%和7.2%。人类主观评价中，300名来自15种语言的参与者一致认为MuEx生成的视频在唇音同步和牙齿自然度方面表现最佳。消融实验表明，PG-MoE和PV-Align是提升多语言泛化能力的关键组件。超参数分析揭示了专家数量和路由策略对性能与计算效率的权衡。此外，MuEx在未见语言（零样本）上也表现出稳健的泛化能力，验证了其跨语言适应性。
+
+### 通俗易懂  
+MuEx这个方法的核心思想是让电脑“听懂”不同语言的发音特点，并根据这些特点“画出”对应的嘴型。首先，它把语音和嘴巴动作都拆解成最小的基础单元，语音叫音素，嘴型叫视觉口型。然后，MuEx会把这些基础单元聚成一组“模版”，这些模版不管是哪种语言都适用，就像不同语言中都能找到相似的嘴巴动作。接着，系统通过一种智能的“专家选择”机制，根据当前说的音素，自动挑选最合适的专家模块来生成嘴型动画，这样就能适应各种语言的发音差异。整个过程就像一个多语言的“翻译官”，先把声音翻译成统一的“嘴型语言”，再根据这个语言生成自然的嘴巴动作。这种设计不仅让电脑能说英语，还能说中文、阿拉伯语、泰语等多种语言，甚至还能应对没见过的新语言，生成的嘴型也更自然、更同步。 
+# Topic: Multi-modal
+## Are We Using the Right Benchmark: An Evaluation Framework for Visual Token Compression Methods 
+2025-10-08｜HKUST(GZ), SJTU, NEU, INSAIT, Shanghai AI Lab, HKUST, Pisa, Trento 
+
+<u>http://arxiv.org/abs/2510.07143v1</u>  
+<u>https://github.com/Chenfei-Liao/VTC-Bench</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/217.jpg)  
+本文针对多模态大语言模型（MLLMs）中视觉Token压缩方法的评估存在的任务不匹配和数据噪声问题进行了系统研究。当前主流的评测基准设计初衷是测试模型的视觉感知和推理能力，而非专门用于压缩技术的效果评估，导致简单的图像下采样方法在多个广泛使用的基准上反而优于许多复杂的压缩算法。作者通过实验证明，这种现象源于基准数据中大量“简单样本”，这些样本对细粒度视觉信息需求不高，因而使得压缩技术的优势难以体现。为此，提出了VTC-Bench评估框架，通过引入基于下采样的样本难度过滤机制，有效剔除噪声样本，构建更具挑战性的测试集，从而实现对视觉Token压缩方法的公平和准确评估，促进该领域的深入发展。
+
+### 方法 
+  
+本文提出的VTC-Bench框架主要包含三大步骤：  
+
+1. **推理与压缩执行**：对每个样本以指定压缩比例执行两种推理流程，一是直接下采样图像，二是使用目标MLLM进行视觉Token压缩。这样获得基准性能和压缩后性能的对比数据。  
+2. **样本分组过滤**：依据下采样模型的推理结果，将样本分为“简单样本”（下采样后正确回答）和“困难样本”（下采样后错误回答）。此步骤利用下采样的性能表现作为难度判别器，有效过滤掉对压缩无关紧要的简单样本。  
+3. **结果聚合分析**：在“困难样本”子集上统计各压缩方法的表现，真实反映其在挑战性视觉理解任务中的优势。该机制确保了评估的针对性和公平性，避免了传统基准中简单样本带来的误导。该框架可无缝应用于现有基准，通过动态调整压缩比例对应的样本子集，实现多维度、细粒度的压缩性能评估。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/218.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/219.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/220.jpg)  
+作者在八个主流视觉语言理解基准上，选用Qwen2-VL-7B与LLaVA-OV-7B两款代表性MLLM，比较了四种先进视觉Token压缩方法（FastV、VisionZip、PruMerge+、DART）与简单图像下采样的性能。实验结果显示：在原始基准上，简单下采样往往优于复杂方法，尤其在较高压缩率下表现更稳定。然而，将样本分为“简单”和“困难”两组后，复杂压缩方法在“困难样本”上显著优于下采样，验证了VTC-Bench的有效性。该框架不仅剔除了大量无关样本的噪声，还放大了不同方法之间的性能差异，使评估结果更具辨识度和指导意义。此外，实验揭示了不同任务对细粒度视觉信息的需求差异，强调了构建多样化且针对性强的压缩评测集的重要性。
+
+### 通俗易懂  
+想象你在考试，题目分成简单和难题。如果考试里大多数题目都很简单，哪怕你只用很基础的方法，也能取得不错的成绩。视觉Token压缩的评测基准就像这样，里面有很多“简单题”，导致简单的图像缩小（下采样）方法看起来比复杂的压缩技术还好。作者的方法就是先用图像缩小这个“简单方法”来做一遍测试，把能答对的题目归为“简单题”，答错的归为“难题”。然后只用“难题”来考察各种压缩方法，真正考验它们在复杂视觉理解上的能力。这样一来，复杂的压缩技术才能显示出它们的优势。这个方法不仅让评测更公平，也帮助研究者更清楚地知道哪种技术在真正有挑战性的任务中表现更好。简单来说，就是先筛选出难题，再公平地比拼技术，避免被简单题“蒙蔽”。 
+## SaFeR-VLM: Toward Safety-aware Fine-grained Reasoning in Multimodal Models 
+2025-10-08｜SCU, NTU, USTC, TeleAI, BUPT, THU, HKUST(GZ) 
+
+<u>http://arxiv.org/abs/2510.06871v2</u>  
+<u>https://github.com/HarveyYi/SaFeR-VLM</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/221.jpg)  
+本文针对多模态大规模推理模型（MLRMs）在跨模态推理中存在的安全风险问题，提出了SaFeR-VLM，一种将安全性直接嵌入推理过程的强化学习框架。当前模型多依赖输出层面的安全过滤，忽视了推理过程中的隐性风险，导致模型在面对对抗性或不安全提示时易产生错误或有害内容。SaFeR-VLM通过构建一个安全感知的推理机制，将安全性从被动的结果约束转变为主动的推理驱动力。该框架整合了四大核心组件：安全关键数据集QI-Safe-10K、基于反思和纠正的安全感知推理展开、安全多维度奖励建模以及基于GRPO的安全优化。实验表明，SaFeR-VLM不仅在多个公开及闭源安全基准测试中显著优于同规模及更大规模模型，还实现了安全性与实用性的良好平衡，展示了安全感知推理的可扩展性和泛化能力。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/222.jpg)  
+SaFeR-VLM框架由以下四部分组成：  
+
+1. **QI-Safe-10K数据集构建**：从多模型多次生成的回答中，基于回答质量和不稳定性指标筛选安全关键且推理敏感的样本，形成一个兼顾质量与不确定性的训练集。  
+2. **安全感知推理展开（Safety-Aware Rollout）**：对生成的回答进行安全性判定。若回答不安全，模型将进行反思，解释为何不安全，并基于反思结果进行自我纠正，保证所有输出均经过安全校验和修正。  
+3. **安全多维度奖励建模**：将推理和答案的逻辑连贯性、事实准确性、视觉关联性和安全意识等多维反馈融合为加权奖励信号，同时对幻觉和矛盾行为施加明确惩罚，细化安全奖励机制。  
+4. **基于GRPO的安全优化**：采用分组相对策略优化（GRPO）算法，强化安全且经过纠正的推理轨迹，确保模型在训练中主动学习安全推理路径，提升推理过程的内在安全性和稳定性。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/223.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/224.jpg)  
+实验部分使用了六个多模态安全基准，包括四个显式安全数据集和两个隐式风险数据集，采用GPT-4o-mini作为评判模型，对推理和答案的安全性与帮助性进行严格评分。SaFeR-VLM在3B和7B模型规模下均表现出显著优势，3B版本安全性提升近36个百分点，帮助性也大幅提升，甚至超越了参数规模超过10倍的开源大模型。7B版本在安全性指标上超越了GPT-5-mini和Gemini-2.5-Flash，且帮助性无明显下降。通过消融实验验证了各组件对性能的贡献，尤其是反思纠正机制和多维奖励建模显著增强了安全性。结果表明，SaFeR-VLM不仅提升了平均性能，还显著减少了安全性能的波动，增强了模型在复杂多模态场景下的安全鲁棒性。
+
+### 通俗易懂  
+简单来说，SaFeR-VLM就像给模型装上了“安全感知的大脑”。首先，它先挑选出那些既重要又容易出错的训练样本，确保模型关注到关键的安全问题。然后，当模型生成回答时，如果发现回答不安全，它不会直接扔掉，而是会先“反思”自己哪里出错了，接着根据反思的结果修改回答。这就像人犯错后先想想为什么错了，再改正。接下来，模型会根据多方面的标准给回答打分，既看逻辑是否通顺、事实是否准确，也看有没有安全隐患，错了就扣分。最后，模型通过一种叫GRPO的强化学习方法，重点学习那些安全且正确的回答路径，逐渐养成安全的思考习惯。这样，模型不仅回答更准确，也更懂得避免产生危险或有害内容，变得更聪明、更可靠。 
+# Topic: Multi-modal｜Image 
+## ChainMPQ: Interleaved Text-Image Reasoning Chains for Mitigating Relation Hallucinations 
+2025-10-07｜SEU, UC Merced, UQ 
+
+<u>http://arxiv.org/abs/2510.06292v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/225.jpg)  
+大型视觉语言模型（LVLMs）在多模态任务中表现优异，但仍面临“幻觉”问题，尤其是关系幻觉，即模型正确识别对象却错误推断它们之间的关系。关系幻觉占所有幻觉的近40%，但相关研究较少。为此，本文提出ChainMPQ，一种无需训练的推理框架，通过交织的文本与图像推理链，利用累积的视觉和文本记忆，逐步解析关系推断。该方法先从问题中提取主语和宾语关键词，强化对应图像区域的注意力；再将关系拆解为主体、客体及其联系三个核心部分，构造多视角问题；最后依次输入模型，利用前一步的文本答案和视觉注意力指导后续推理，形成层叠的多模态推理链。实验显示，ChainMPQ显著减少关系幻觉，提升模型推理的准确性和可靠性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/226.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/227.jpg)  
+ChainMPQ主要包括三个核心模块：  
+
+1. **文本引导的注意力增强**：利用自然语言处理工具提取问题中的主体和客体关键词，结合视觉编码器对图像进行特征提取，通过交叉注意力机制增强与关键词相关的图像区域特征，为后续推理奠定基础。  
+2. **多视角文本提示构建**：将原始关系问题拆解为五个互补子问题，分别聚焦于主体、客体的定位以及关系的不同角度，通过“掩码”策略有针对性地提出问题，促使模型逐步关注关系的各个组成部分，减少对语言先验的依赖。  
+3. **交织的文本-图像推理链**：按顺序输入子问题，模型在回答每个问题时结合之前的文本答案和视觉注意力权重，动态调整后续问题的视觉关注区域。通过选择关注度最高的视觉token形成注意力偏置，逐步积累和传递多模态记忆，实现系统化的关系推理，避免单步推断的错误。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/228.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/229.jpg)  
+本文在两种主流开源LVLM（LLaVA-1.5和InstructBLIP）及两个专注于关系推理的基准数据集（MMRel和R-Bench）上进行了评测。结果表明，ChainMPQ在准确率、精确率和F1值上均优于现有基线方法，尤其在减少错误关系预测（精确率提升4%以上）方面表现突出。消融实验验证了三个核心模块的贡献：视觉注意力增强、多视角问题构建及交织推理链均显著提升性能。参数敏感性分析显示，合理设置视觉token数量和注意力偏置权重能进一步优化效果。案例研究通过对比模型回答前后的视觉注意力分布，直观展示了ChainMPQ如何引导模型聚焦相关图像区域，实现更准确的关系推断。
+
+### 通俗易懂  
+ChainMPQ的核心思想是让模型像人一样一步步思考图片中物体之间的关系，而不是一次性给出答案。首先，它会从问题里找出“谁”和“跟谁”有关，比如“狗”和“飞盘”，然后让模型专注观察这两个物体在图片中的位置。接着，它把问题拆成几个小问题，比如“狗在哪里？”、“飞盘在哪里？”、“狗和飞盘之间是什么关系？”，一步步问清楚。每回答一个问题，模型都会记住刚才看到的画面和答案，帮助它更好地回答下一个问题。这样，模型的注意力不会乱飞，而是集中在关键物体和它们的互动上，减少了误判。实验显示，这种一步步推理的方式能让模型更准确地理解图片里的关系，避免“看错”物体之间的动作或位置。简单来说，ChainMPQ就像给模型配备了一双“有条理的眼睛”和“耐心的大脑”，一步步确认细节，最终得出正确结论。 
+# Topic: Multi-modal｜Video 
+## From Captions to Keyframes: Efficient Video Summarization via Caption- and Context-Aware Frame Scoring 
+2025-10-07｜Amazon 
+
+<u>http://arxiv.org/abs/2510.06509v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/230.jpg)  
+本文针对长视频中冗余且信息量大的帧序列，提出了一种高效的视频-语言理解框架KeyScore，旨在从视频及其对应字幕中自动筛选出语义丰富且时序多样的关键帧。KeyScore通过融合语义相似度、时间覆盖性和上下文重要性三方面信号，赋予每帧一个综合重要性评分，从而为视频检索、字幕生成及视频推理等下游任务提供精炼且语义对齐的输入。为辅助关键帧候选生成，文中还提出了STACFP，一种结合视觉特征与时间信息的自适应聚类方法，能动态调整聚类数目，有效捕获视频动态变化，避免冗余帧的产生。该方法在多个公开数据集上实现了高达99%的帧数压缩率，同时显著提升了检索和分类任务的性能，展示了基于语义驱动的帧选择对视频理解的强大促进作用。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/231.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/232.jpg)  
+本文方法分为两大核心模块：  
+
+1. **STACFP（时空自适应聚类帧提议）**  
+   - 利用HSV颜色直方图提取低级视觉特征，结合归一化时间戳构建时空特征向量。  
+   - 通过k-means聚类对视频帧进行聚类，自动利用轮廓系数确定最优聚类数k，动态分配更多簇到动态场景，减少静态场景冗余。  
+   - 每个簇中心对应一帧作为候选关键帧，保证视觉多样性和时间覆盖。  
+2. **KeyScore帧评分机制**  
+   - **语义相似度（S_sem）**：计算帧与字幕的余弦相似度，确保选择与文本内容高度相关的帧。  
+   - **时间代表性（S_temp）**：衡量帧对整体视频时间线的代表性，促进时间上的多样性覆盖。  
+   - **上下文丢失影响（S_drop）**：通过“留一法”评估去除该帧后视频-文本匹配度的降低程度，筛除冗余无用帧。  
+三者加权融合生成最终帧分数，结合任务需求设定阈值，选出最具代表性的关键帧用于后续处理。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/233.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/234.jpg)  
+实验部分在多个任务和数据集上验证了KeyScore及STACFP的有效性。  
+- **视频文本检索**：在MSRVTT、MSVD和DiDeMo数据集上，KeyScore相比传统均匀采样和基于视觉聚类的采样方法，显著提升了检索准确率（R@1提升至63.9%等），同时帧数减少至原始的1%-5%，大幅降低计算成本。  
+- **关键帧提取**：在TVSum20和SumMe视频摘要数据集上，KeyScore结合CLIP和PerceptionEncoder实现了优于现有方法的F1分数，显示其在语义驱动的关键帧选取上的优势。  
+- **零样本动作分类**：在HMDB-51数据集上，KeyScore通过利用视频生成的字幕指导帧选择，提升了动作识别准确率，同时保持较高的帧压缩率，优于多种基线模型。  
+总体结果表明，KeyScore兼顾了语义丰富性、时间覆盖与上下文重要性，能够高效筛选关键帧，提升多模态视频语言任务性能且显著节省计算资源。
+
+### 通俗易懂  
+想象你要从一部长电影中挑出几张最能代表故事情节的照片。传统方法要么随便抽取几张（均匀采样），要么只看画面颜色和构图（视觉聚类），结果可能选出很多重复或无关紧要的照片。KeyScore就像一个聪明的助手，它不仅看照片和字幕的内容是否相关（语义相似度），还考虑这些照片在整个故事里的时间分布（时间代表性），以及如果不选这张照片，故事理解会不会大打折扣（上下文丢失影响）。它先用STACFP方法把视频分成几个“场景簇”，每个簇选出一张代表照片，再用KeyScore给每张照片打分，最后挑出既丰富又关键的几张。这样不仅能用更少的照片讲好故事，还能让后续的检索、分类等任务更准确更快。简单来说，KeyScore帮你用最少的图片，抓住视频的核心内容。 
+# Topic: Foundation 
+## Quantum-enhanced Computer Vision: Going Beyond Classical Algorithms 
+2025-10-08｜US, Adelaide, ICImperial, MPI-INF 
+
+<u>http://arxiv.org/abs/2510.07317v1</u>  
+<u>https://quantumai.google/learn/map</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/235.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/236.jpg)  
+本文系统综述了量子增强计算机视觉（QeCV）的研究现状与发展潜力，强调其结合了计算机视觉、优化理论、机器学习与量子计算的交叉特性。传统计算方法在处理大规模、组合优化问题时，常面临计算资源瓶颈和近似解的限制，而量子计算利用量子叠加、纠缠等独特物理效应，提供了潜在的指数级加速和更优解空间探索能力。文章介绍了两大主流量子计算范式——基于门的量子计算和量子退火，阐述了它们各自的优势及适用场景。通过对现有QeCV算法、硬件平台及工具链的全面梳理，本文为计算机视觉领域的研究者和实践者提供了量子计算的入门指南，并探讨了该领域的开放挑战及未来发展方向，强调了量子计算对视觉任务算法设计的深远影响和实际应用前景。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/237.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/238.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/239.jpg)  
+QeCV方法主要基于以下几个核心步骤和技术：  
+
+1. **问题映射与编码**：将计算机视觉中的问题转化为量子机器可接受的形式，如将优化问题转换为二次无约束二进制优化(QUBO)形式，或设计对应的量子门序列。  
+2. **量子态初始化与演化**：利用量子比特的叠加态和纠缠态，初始化系统状态。基于门的量子计算通过一系列可控单量子比特和多量子比特门操作实现量子态演化；而量子退火则通过哈密顿量的缓慢演化，引导系统达到能量最低态。  
+3. **量子电路设计与参数化**：采用参数化量子电路（PQC），结合经典优化算法训练量子门参数，使其适应具体视觉任务，提升算法性能。  
+4. **测量与解码**：对量子态进行测量，获得经典比特串，并将其映射回原始问题的解空间。  
+5. **硬件适配与嵌入**：考虑量子硬件的连接限制和噪声特性，进行逻辑比特到物理比特的嵌入和电路转译，确保算法在实际设备上可执行。  
+这些方法共同构成了QeCV的算法框架，既融合了经典计算的优势，也充分发挥了量子计算的独特潜力。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/240.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/241.jpg)  
+当前QeCV实验主要集中在利用现有的Noisy Intermediate-Scale Quantum (NISQ)设备和量子退火机上验证算法的可行性和性能提升。实验涵盖的视觉任务包括点集匹配、网格配准、目标跟踪和鲁棒拟合等，典型工作通过将问题映射为QUBO形式，在量子退火硬件上求解组合优化问题，展示了实际运行的可能性和效果。基于门的量子计算实验则多在模拟器上进行，部分小规模问题已在真实量子设备上测试。实验结果表明，尽管硬件规模和噪声限制当前仍是瓶颈，但量子算法在特定问题上已显示出优于经典近似方法的潜力。此外，实验还揭示了量子电路设计、参数优化和测量策略对性能的显著影响，推动了QeCV方法向更实用和高效方向发展。
+
+### 通俗易懂  
+量子增强计算机视觉的核心方法可以理解为“用量子计算机帮忙解决视觉问题”。首先，我们要把视觉问题，比如图像匹配或者物体识别，转换成量子计算机能理解的语言。这通常是把问题变成一个数学模型，像拼图游戏一样，把任务拆成很多小的“开关”问题。接下来，量子计算机会把这些“开关”放在一起，利用量子比特的特殊性质——比如一个开关可以同时是开和关（叠加态），或者两个开关的状态互相关联（纠缠态），这样它能同时尝试很多解决方案。量子计算机通过一系列“量子门”来操作这些开关，逐步找到最佳或接近最佳的答案。最后，我们测量这些开关的状态，得到一个具体的解决方案，再把它翻译回视觉任务中。整个过程就像让量子计算机帮我们快速找到复杂问题的最佳拼图方案，而不是一个一个试错，从而节省大量时间和计算资源。 
