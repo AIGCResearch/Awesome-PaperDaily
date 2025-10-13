@@ -1,0 +1,188 @@
+# Topic: Image Generation  
+## SAEdit: Token-level control for continuous image editing via Sparse AutoEncoder 
+2025-10-06｜TAU, Google DeepMind｜⭐️⭐️ 
+
+<u>http://arxiv.org/abs/2510.05081v1</u>  
+<u>https://ronen94.github.io/SAEdit/</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/22.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/23.jpg)  
+本文提出了一种基于稀疏自编码器（Sparse Autoencoder, SAE）的文本嵌入层级编辑方法，用于实现文本驱动的连续且解耦的图像编辑。当前大规模文本到图像的扩散模型虽能生成高质量图像，但仅依赖文本提示难以实现对编辑属性的细粒度控制和连续调节。作者通过训练SAE将文本嵌入映射到高维且稀疏的潜空间，在该空间中语义属性被解耦为独立维度。编辑时，仅调整与目标属性相关的稀疏维度，并可通过放缩因子实现连续强度控制。该方法不修改扩散模型本身，具有模型无关性，适配多种文本到图像生成架构。实验中，方法展现了对多样属性的精准局部编辑能力，且在保持主体身份的同时实现了表达、年龄、配饰等属性的连续调节，支持真实图像的反演编辑，表现优于多种训练或优化基线。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/24.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/25.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/26.jpg)  
+本文方法核心在于利用稀疏自编码器（SAE）对冻结的T5文本编码器输出嵌入进行训练，构建一个高维稀疏潜空间以揭示语义解耦的编辑方向。具体步骤如下：  
+
+1. **SAE训练**：在大量文本嵌入上训练一个简单的编码器-解码器结构，优化重建损失和稀疏正则项，促使潜空间维度对应独立语义特征。  
+2. **编辑方向发现**：通过比较源文本（如“一个人”）和目标文本（如“一个笑着的人”）的稀疏潜表示，计算元素比值，筛选出与目标属性相关的稀疏维度，构造稀疏编辑向量。该过程可利用多个语义相似的文本对增强方向的鲁棒性，采用奇异值分解提取主方向。  
+3. **编辑应用**：将编辑向量乘以可调节的标量，添加到对应文本令牌的稀疏潜表示中，再通过解码器恢复为修改后的文本嵌入，替换原嵌入输入扩散模型。  
+4. **注入调度**：设计指数递增的编辑强度注入策略，编辑影响在扩散过程后期逐渐增强，保证结构稳定同时实现细节调控。  
+该方法不需额外训练扩散模型或针对特定编辑微调，支持连续且局部的语义属性控制。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/27.jpg)  
+作者在Flux和Stable Diffusion 3.5两大文本到图像模型上进行了广泛实验，验证了方法的连续性、解耦性和模型无关性。定性结果显示，该方法能对人脸表情、年龄、发色、配饰等属性进行局部且连续调整，且在多主体场景中实现对单一主体属性的独立控制。对比多种训练和训练自由方法，本文方法在LPIPS保持度和基于视觉问答的语义准确度上均表现优异，且用户研究显示其在图像保持性、提示遵从性和整体质量上显著优于竞品。消融研究证明，多文本对方向聚合和指数注入调度是提升编辑质量和保持细节的关键。方法还成功应用于真实图像编辑，结合先进的图像反演技术，实现高保真连续属性修改。局限性在于对极端或违背模型先验的属性编辑存在困难，如“给女性添加胡须”可能导致性别识别混淆。
+
+### 通俗易懂  
+这项研究的核心是让计算机更聪明地理解和调整描述图像的文字，从而更精准地编辑图片。想象你有一句话描述一张图片，比如“一个女人”，你想让她笑得更灿烂。传统方法只能简单地把“笑”加进去，或者用“微笑”和“大笑”这样的标签切换，无法平滑地调整笑容的程度。作者训练了一个特殊的“翻译器”（稀疏自编码器），它能把这句话拆成很多小块，每块代表一句话里一个独立的意思，比如“女人”、“笑容”等。通过比较“一个女人”和“一个笑着的女人”两个句子的拆解结果，找到“笑”这个意思对应的那部分小块。然后，只改变这部分小块的强度，就能让笑容从轻微到灿烂自然过渡。这个过程不会影响句子里其他部分的意思，比如“女人”的身份和背景保持不变。最后，把调整后的文字信息送入图像生成模型，就能得到笑容不同程度的图片。这种方法既简单又灵活，不需要重新训练图片生成模型，可以用在各种场景下，实现细致又连贯的图像编辑。 
+## TBStar-Edit: From Image Editing Pattern Shifting to Consistency Enhancement 
+2025-10-06｜Alibaba 
+
+<u>http://arxiv.org/abs/2510.04483v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/8.jpg)  
+TBStar-Edit 是一款专为电商场景设计的高一致性图像编辑模型。当前主流图像编辑模型虽在通用领域表现优异，但在电商应用中常出现主体身份和细节不一致的问题，影响产品展示的真实性和专业性。为解决这一瓶颈，TBStar-Edit通过严密的数据工程、分层模型架构设计及分阶段训练策略，实现了精确且高保真的编辑效果，同时保持商品外观和布局的完整性。该模型不仅能处理通用编辑任务，还针对电商特有的需求，如人物肖像背景替换、光影调整等，展现出卓越性能。实验结果表明，TBStar-Edit在自建电商基准数据集上，无论是客观指标（如VIEScore）还是用户主观偏好评分，均显著优于现有通用编辑模型，验证了其在电商领域的实用价值和领先地位。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/9.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/10.jpg)  
+TBStar-Edit的核心方法包括三个方面：  
+
+1. **数据工程**：构建高质量训练数据，包含四个阶段——数据收集、编辑对构建、数据过滤及增强。重点减少合成数据比例，优先采集真实电商及通用场景图像；采用四种编辑对构造方法（专家模型驱动、模板法、上下文生成、LoRA辅助生成），确保编辑指令精准且主体一致性强；通过视觉语言模型（VLM）和人工复核严格筛选数据，提升训练数据质量和多样性。  
+2. **模型架构**：设计分层框架，包含基础模型、模式迁移模块和一致性增强模块。模式迁移模块通过LoRA层注入编辑能力，一致性增强模块则专注于维护编辑后图像的主体身份和细节，整个架构支持灵活替换不同基础模型。  
+3. **训练策略**：采用两阶段训练，第一阶段使用大规模混合数据训练模式迁移模块，实现从生成到编辑的能力转变；第二阶段冻结模式迁移模块，仅训练一致性增强模块，专注提升编辑一致性和细节还原，特别针对电商场景的高一致性需求。训练时融合中英文多样化指令，提升跨语言编辑准确性。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/11.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/12.jpg)  
+实验部分基于自建的电商编辑基准数据集Ecom-Edit Bench，涵盖肖像姿态、背景替换、配饰添加、文字修改、水印去除等多种典型电商编辑任务。通过与Flux-Kontext、Qwen-Image-Edit、NanoBanana及Seedream4.0等主流通用编辑模型对比，TBStar-Edit在VIEScore的语义一致性和整体评分上均取得最高，显示其在保持产品身份和细节一致性方面的优势。视觉对比展示了其在复杂编辑任务中对主体和背景的精准处理能力，避免了常见的身份漂移和细节丢失问题。主观用户偏好调查中，TBStar-Edit也获得了显著更高的认可率，尤其在中文指令的响应和细节保持上表现突出，进一步验证了其在电商实际应用中的竞争力和实用性。
+
+### 通俗易懂  
+TBStar-Edit的核心方法可以简单理解为“先学会怎么改，再学会怎么改得更好”。首先，研究团队收集了大量真实的电商图片，并通过多种聪明的方法制造出“前后对比”的训练样本，这些样本告诉模型怎样根据指令去修改图片，同时保证修改后的产品看起来还是同一个东西，没有跑偏。其次，模型被设计成分层结构：一层负责理解和执行修改任务（比如换背景、加配饰），另一层则专门负责确保修改后图片的主体和细节保持一致，不出错。最后，训练分两步走，先让模型学会基本的编辑技能，再让它专注于提高修改的准确性和一致性。这样，TBStar-Edit不仅能听懂复杂的中英文指令，还能在保持商品真实感的同时完成各种精细编辑，非常适合电商这种对图片质量和一致性要求极高的场景。 
+## DiT-VTON: Diffusion Transformer Framework for Unified Multi-Category Virtual Try-On and Virtual Try-All with Integrated Image Editing 
+2025-10-03｜Amazon, UCLA, Duke｜CVPR 2025 
+
+<u>http://arxiv.org/abs/2510.04797v1</u>  
+<u>https://dit-vton.github.io/DiT-VTON/</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/28.jpg)  
+随着电商的快速发展，虚拟试穿（Virtual Try-On, VTO）技术需求激增，旨在帮助用户将商品真实地叠加到自身图像中，实现个性化购物体验。现有VTO模型虽然取得进展，但在细节保留、鲁棒性、采样效率、多类别泛化及图像编辑能力方面仍存在不足。本文提出DiT-VTON，一种基于扩散变换器（Diffusion Transformer, DiT）的统一框架，创新性地将文本条件图像生成架构适配为图像条件的VTO任务。DiT-VTON不仅支持传统服装试穿，还扩展到多类别产品的“虚拟试穿全部”（Virtual Try-All, VTA），实现了多产品类别的统一处理和多样化图像编辑功能。该方法显著提升了细节表现、真实感和个性化调整能力，推动了VTO技术在现实场景中的广泛应用。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/29.jpg)  
+DiT-VTON将VTO问题视为图像条件的掩码修补问题，目标是将参考商品图像中的产品自然融合到用户图像的指定区域。核心方法包括：  
+
+1. **Diffusion Transformer架构**：替代传统U-Net，利用变换器块提升生成效率和质量。  
+2. **图像条件整合策略**：探索三种主要方式——（1）通道拼接（Channel Concatenation）：将掩码图、参考图和噪声在通道维度合并；（2）ControlNet集成：通过副网络编码条件并融合主网络；（3）令牌拼接（Token Concatenation）：将所有图像条件切分成令牌后序列拼接，效果最佳。  
+3. **姿态信息引入**：通过两种姿态融合策略——姿态令牌拼接和姿态图像缝合，增强生成结果对人体姿态的保持和准确性。  
+4. **数据扩展与训练**：使用包含复杂背景、多类别商品及非服装产品的扩展数据集，提升模型在“虚拟试穿全部”任务中的泛化能力。  
+该框架兼顾高保真度、细节丰富度及多功能编辑，支持局部调整、纹理迁移和对象级定制。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/30.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/31.jpg)  
+在VITON-HD和DressCode两个公开基准数据集上，DiT-VTON的令牌拼接结合姿态缝合策略表现最佳，超越多种现有顶尖VTO模型，指标包括SSIM、LPIPS、FID和KID均显著提升。对比实验显示，令牌拼接优于通道拼接和ControlNet集成，且姿态信息的引入进一步提升了生成的姿态准确度和细节还原能力。扩展至多类别“虚拟试穿全部”数据集，模型展现出强大的零样本泛化能力，不仅在服装类别内表现优异，也在鞋帽、包包、家具等非服装类别中取得领先。定性分析表明，DiT-VTON在复杂背景和非标准姿态下依然稳定生成高质量图像，且支持丰富的图像编辑功能，如局部细节调整和纹理迁移，满足实际应用需求。
+
+### 通俗易懂  
+DiT-VTON的核心思想是把虚拟试穿看作给照片“填空”的任务：用户照片上想换的衣服或物品区域被遮挡，模型需要根据参考商品图像，把这个区域填得既自然又真实。为了实现这一点，研究人员设计了三种把用户照片和商品图片信息“告诉”模型的方法。最有效的是“令牌拼接”，它把两张图片拆成许多小块，然后把这些小块按顺序放在一起，让模型一次性看到所有信息，像拼图一样完成合成。为了让换上去的衣服或物品和人体姿势匹配，还加入了人体姿势信息，保证手臂或身体动作不会被搞错。训练时，模型用了大量不同类别的商品图片，包括衣服、鞋子、包包甚至家具，这样它学会了适应各种情况，不用专门训练就能处理各种商品。最终，这种方法不仅让换装效果更真实细腻，还能灵活地调整细节，满足用户个性化需求。 
+## ChronoEdit: Towards Temporal Reasoning for Image Editing and World Simulation 
+2025-10-05｜NVIDIA, Toronto 
+
+<u>http://arxiv.org/abs/2510.04290v1</u>  
+<u>https://research.nvidia.com/labs/toronto-ai/chronoedit</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/32.jpg)  
+ChronoEdit提出了一种创新的图像编辑框架，旨在解决当前编辑模型在物理一致性上的不足，特别适用于需要世界模拟的场景。该方法将图像编辑任务重新定义为视频生成问题，将输入图像和编辑后图像视为视频的首尾两帧，从而利用预训练视频生成模型内隐的时间一致性和物理运动规律。相比传统图像编辑模型容易出现几何变形或新物体幻觉，ChronoEdit通过引入时间推理阶段，显著提升编辑结果的物理合理性和视觉连贯性。为评估模型在物理一致性方面的表现，作者还设计了专门针对世界模拟任务的PBench-Edit基准，涵盖自动驾驶、机器人操作等多样化应用，展现了ChronoEdit在视觉保真度和物理合理性上的领先优势。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/33.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/34.jpg)  
+ChronoEdit的核心方法包括以下几个关键点：  
+
+1. **视频生成重构编辑任务**：将输入图像（参考帧）和目标编辑图像（目标帧）编码为视频的起始和结束帧，利用视频VAE将其映射至潜空间，形成时间序列结构。  
+2. **时间推理令牌（Temporal Reasoning Tokens）**：在输入和目标帧之间插入多个中间潜帧作为推理令牌，模型在推理阶段共同去噪这些帧，模拟合理的编辑过渡轨迹，强化物理和结构连续性。  
+3. **联合训练策略**：结合图像编辑对和大量合成视频数据训练，视频数据帮助模型学习时间动态和物理规律，图像对则强化语义编辑能力。  
+4. **推理阶段两步法**：先利用时间推理令牌进行多步去噪以规划编辑路径，然后丢弃中间帧，专注于最终帧的细化，平衡了编辑质量与计算效率。  
+5. **蒸馏加速**：通过蒸馏技术训练轻量级学生模型，显著减少推理步骤，实现快速高质量编辑。  
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/35.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/36.jpg)  
+在ImgEdit和PBench-Edit两个基准上，ChronoEdit展现了卓越的性能。ImgEdit涵盖多种常见编辑任务，ChronoEdit-14B版本在整体评分上领先于多款开源和商业模型，尤其在提取、移除和动作编辑任务中表现突出，显示其对空间结构和动态变化的强大建模能力。PBench-Edit则聚焦物理一致性和世界模拟场景，ChronoEdit同样取得最高分，特别是在动作保真度上显著优于竞品。引入时间推理令牌的ChronoEdit-14B-Think版本进一步提升了编辑的物理合理性和连贯性。轻量化的ChronoEdit-Turbo在保持较高编辑质量的同时，实现了6倍的推理速度提升。定量评价结合GPT-4.1自动评分，定性结果显示ChronoEdit能够自然地模拟编辑过程，生成符合物理规律的合理过渡，显著改善传统编辑模型易出现的结构错乱和物体幻觉问题。
+
+### 通俗易懂  
+ChronoEdit的核心想法是把图片编辑看成制作一段短视频：把原始图片当作视频的第一帧，把编辑后的图片当作最后一帧。然后，模型会“想象”出这段视频中间会发生什么变化，生成一系列中间帧，就像电影里角色从一个动作平滑过渡到另一个动作一样。这样做的好处是，模型不仅仅直接跳到最终结果，而是一步步推理出合理的变化过程，保证编辑后的图片看起来更自然、物体不会错位或者莫名其妙地变形。为了提高效率，模型只在推理的前几步生成这些中间帧，之后再专注把最后一帧做得更精细。此外，研究团队还训练了一个更快的版本，让编辑过程更节省时间。总的来说，这种方法就像给模型装上了“时间感知”的大脑，让它在编辑图片时考虑到动作的连续性和物理规律，从而做出更真实、更可信的修改。 
+## ConceptSplit: Decoupled Multi-Concept Personalization of Diffusion Models via Token-wise Adaptation and Attention Disentanglement 
+2025-10-06｜Korea U, Kyung Hee U｜ICCV 2025 
+
+<u>http://arxiv.org/abs/2510.04668v1</u>  
+<u>https://github.com/KU-VGI/ConceptSplit</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/0.jpg)  
+近年来，文本生成图像（T2I）扩散模型的多概念个性化成为研究热点，旨在使模型能同时高保真地表达多个定制化主题。然而，多概念融合面临“概念混合”难题，即不同已学习概念在生成图像中相互干扰，导致表现不准确。现有方法主要采用适配器融合或文本嵌入调整，但这些方法在推理阶段需要合并多个适配器，容易引发概念混合和注意力机制紊乱。本文提出ConceptSplit框架，通过训练和推理阶段对概念进行解耦，显著缓解了概念干扰。该框架包括两大核心技术：Token-wise Value Adaptation（ToVA），一种仅调整注意力机制中value投影的无融合训练方法，避免了key投影调整带来的注意力破坏；以及Latent Optimization for Disentangled Attention（LODA），通过优化潜变量实现推理时注意力的解耦，进一步防止概念混合。大量定量与定性实验验证了ConceptSplit在多概念个性化上的优越性能和稳定性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/1.jpg)  
+ConceptSplit框架主要由两部分组成：  
+
+1. **Token-wise Value Adaptation (ToVA)**  
+   - 仅针对目标token的value投影训练适配器，避免修改key投影，保持模型原有的token-注意力绑定能力。  
+   - 训练时不合并多个适配器，推理时动态附加对应token的适配器，避免了传统适配器融合引发的概念混合。  
+2. **Latent Optimization for Disentangled Attention (LODA)**  
+   - 在推理阶段，对潜变量进行优化以分离不同概念的注意力分布，减少注意力重叠带来的干扰。  
+   - 采用两阶段策略：第一阶段优化潜变量以最大化不同token间注意力分布的差异；第二阶段引入Attention Fixing Guidance，固定已解耦的注意力结构，防止优化停止后注意力重新纠缠。  
+该方法利用KL散度衡量不同token注意力分布间的差异，通过正则化潜变量更新实现注意力分离，兼顾生成图像质量与概念解耦。ToVA与LODA结合，有效解决多概念个性化中的融合冲突和注意力紊乱问题。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/2.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/3.jpg)  
+实验部分涵盖多概念个性化的定量与定性评估，选用包含多对象与背景的复杂场景数据集，设计多样化的生成提示。评价指标包括文本对齐度（TA）、基于CLIP和DINO的图像对齐度（C-IA、D-IA）及新引入的GenEval（GE）指标，后者通过目标检测验证生成图像中各概念的完整性和分离性。实验结果显示，ConceptSplit在GE指标上显著优于现有主流方法，表明其更好地避免了概念混合。定性对比中，传统方法往往出现对象缺失或概念融合模糊，而ConceptSplit生成的图像中各个对象清晰分离、细节丰富。消融实验验证了仅训练value投影的ToVA比修改key或同时修改key和value更能保持注意力稳定，LODA的两阶段优化策略有效提升了多对象场景下的表现。整体来看，ConceptSplit在保持高质量图像生成的同时，实现了多概念的稳定解耦，展现出良好的泛化能力和实用价值。
+
+### 通俗易懂  
+ConceptSplit的核心思想是让模型“分别记住”和“清楚区分”多个不同的概念，避免它们在生成图像时混在一起。它用了两个简单但关键的技巧：  
+首先，ToVA只调整每个概念对应的“信息读取”部分（value），而不动“信息定位”部分（key），这样模型在识别各个概念时不容易混淆。并且，训练时不把多个概念的调整结果混合在一起，而是分别保存，推理时按需调用，避免了概念互相影响。  
+其次，LODA是在生成图像时，反复调整模型内部的“注意力焦点”，让每个概念的关注区域更分明，就像给每个对象戴上不同颜色的“高光”，防止它们互相遮挡或融合。这个过程分两步：先让注意力尽量分开，然后固定住这种分开状态，保证图像生成时效果稳定。  
+简单来说，ConceptSplit就像给每个概念配备了专属的“调音师”和“聚光灯”，让它们在画面中既独立又清晰，避免了传统方法中“概念混搭”的尴尬，生成的图像更准确、更细致。 
+## World-To-Image: Grounding Text-to-Image Generation with Agent-Driven World Knowledge 
+2025-10-05｜HKUST, Georgia Tech, UMass Amherst, Twelve Labs 
+
+<u>http://arxiv.org/abs/2510.04201v1</u>  
+<u>https://github.com/mhson-kyle/World-To-Image</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/13.jpg)  
+本文提出了WORLD-TO-IMAGE（W2I）框架，旨在解决当前文本到图像（T2I）生成模型在处理新颖、长尾或领域特定概念时的性能下降问题。传统T2I模型因训练数据的知识截止，难以准确理解和表现未见过的实体或概念。W2I通过引入一个智能代理，动态从网络检索相关图像和文本信息，将外部世界知识注入生成过程，提升模型对新颖概念的语义理解和视觉表现。该框架不需对基础模型进行再训练，而是通过多模态提示优化，结合文本重构与图像检索，实现语义对齐和美学质量的双重提升。评估方面，作者不仅采用传统指标，还引入了基于大型语言模型的LLM-Grader和人类喜好驱动的ImageReward，确保评估更贴近真实语义忠实度。实验结果表明，W2I在包含新颖概念的NICE基准测试上，准确率较现有最优方法提升8.1%，展现了显著的效果和高效的迭代优化能力。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/14.jpg)  
+W2I框架设计了一个多代理系统，以智能协调文本与视觉信息的优化过程，主要包括以下步骤：  
+
+1. **失败诊断与策略选择**：通过初步生成和概念覆盖检测，判断生成失败是因渲染限制还是对概念理解不足，决定调用文本优化代理（POA）或图像检索代理（IRA）。  
+2. **语义分解与文本改写**：POA将复杂提示分解为基本概念，替换晦涩术语为模型熟悉的表达，保留原意以提升文本对模型的可理解性。  
+3. **多模态视觉条件引入**：IRA从网络检索与提示相关的参考图像，作为生成的视觉辅助，强化对新颖实体的语义绑定。  
+4. **迭代优化机制**：通过多轮循环，代理不断调整提示文本和参考图像，生成新的图像并根据语义对齐和美学指标反馈，直到满足收敛条件或达到最大迭代次数。  
+5. **综合评分体系**：评估函数融合语义对齐度、关键词覆盖率及图像美学质量，确保生成结果既准确又具视觉吸引力。  
+该方法无需修改基础生成模型，利用外部知识和多模态提示优化，显著扩展了模型对未见概念的表现能力。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/15.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/16.jpg)  
+在实验中，作者比较了W2I与多种主流T2I模型及优化方法，包括Stable Diffusion系列、OmniGen2和Promptist等。评测数据涵盖Lexica、DiffusionDB以及作者专门构建的NICE基准，后者包含大量新颖、长尾和时效性强的概念，专门用于测试模型对未见实体的处理能力。评估指标采用了LLM-Grader的多维度语义对齐评分和基于人类偏好的ImageReward，兼顾语义忠实度和视觉质量。结果显示，W2I在所有数据集上均优于对比方法，尤其在NICE基准中，准确率提升8.1%，整体性能提升4.5%。消融实验进一步验证了文本优化与图像检索的协同作用，单独使用任一模块均不及联合使用效果。迭代次数分析表明，前两轮优化带来最大提升，体现了方法的高效性。定性结果展示了W2I在复杂提示下更准确地捕捉新颖概念和细节，验证了其在多模态知识注入方面的优势。
+
+### 通俗易懂  
+简单来说，W2I就是给文本生成图片的“画家”装上了一个超级聪明的助手，这个助手能上网查找相关的图片和信息，帮助画家理解那些它之前没见过或不熟悉的词语和概念。首先，助手会判断画家画的图片是不是因为不懂某个词才画错了。然后，助手会把复杂难懂的词拆开，换成画家更熟悉的说法，或者从网上找一些相关的图片给画家参考。画家看到这些图片后，就能更准确地画出想要的内容。这个过程会重复几次，每次都让画家根据新的信息调整画作，直到画得最好为止。这样做的好处是，不用重新训练画家本身（模型），只需要帮它“看懂”更多东西，画出来的图片既准确又好看。实验证明，这种方法对那些特别难画的新鲜事物特别有效，画出来的图片更符合人们的期待。
+## ID-Consistent, Precise Expression Generation with Blendshape-Guided Diffusion 
+2025-10-06｜ICImperial 
+
+<u>http://arxiv.org/abs/2510.04706v1</u>  
+<u>https://github.com/foivospar/Arc2Face</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/89.jpg)  
+本文提出了一种基于扩散模型的细粒度面部表情生成框架，旨在实现身份一致且精确控制的表情合成。该方法在Arc2Face身份一致基础模型上引入了表达适配器，利用FLAME三维面部模型的blendshape参数实现对表情的显式调控，能够生成包括极端和非对称表情在内的多样化面部表情，保持了高保真度和身份一致性。此外，设计了一个可插拔的参考适配器，实现基于输入参考图像的表情编辑，能够在不改变人物外观和背景的情况下，灵活调整表情。通过丰富的图像和视频数据训练，模型不仅能捕捉常见情绪，还能表现微表情和细微表情变化，优于现有主流方法，适用于影视娱乐及人机交互等领域。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/90.jpg)  
+本方法基于Arc2Face扩散模型，核心模块包括：  
+
+1. **表达适配器**：将FLAME 3D面部模型的blendshape参数（包含表情、眼睑姿态、下颌动作）拼接成表达向量，通过轻量级多层感知机映射到CLIP潜在空间，生成表达的key和value矩阵，注入UNet的cross-attention层，实现表达信息的解耦和精细控制。  
+2. **参考适配器**：引入一个冻结的参考UNet作为特征编码器，提取输入参考图像的多尺度特征，通过自注意力层与主UNet融合，并结合LoRA微调层，支持基于真实图像的表达编辑，保持背景和外观一致。  
+3. **训练策略**：分两阶段进行，先训练表达适配器，利用包含丰富表情变化的AffectNet、FEED和FFHQ数据集，确保表达多样性；再冻结表达适配器，训练参考适配器，使用跨帧配对实现表达变化的稳定学习。此设计保持Arc2Face预训练权重不变，保证身份信息稳定。  
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/91.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/92.jpg)  
+实验涵盖身份驱动和参考驱动两种表达生成场景。身份驱动实验中，模型在AffectNet验证集上生成5K表达样本，对比FineFace和CapHuman方法，在FID、情绪分类准确率、动作单元误差、Valence-Arousal误差和3D表达参数误差等指标均显著优越，且用户主观评价中获得72%优选率。参考驱动实验中，模型整合参考适配器，针对MagicFace、EmoStyle和Face-Adapter进行比较，表现出更高的表达传递准确性和身份保持能力。消融研究表明，采用FLAME blendshape参数优于深度表达特征和ControlNet条件方式，且丰富的表达多样性训练数据对模型表现至关重要。模型在保持身份一致的同时，实现了精细且多样的表情控制。
+
+### 通俗易懂  
+这项研究的核心是让计算机生成的脸部图像能够准确地表达各种细微的面部表情，同时保证人物的身份特征不被改变。它用了一个叫“扩散模型”的技术基础，然后加了两个特别的“适配器”：第一个适配器用的是一种3D面部模型里的参数，这些参数像是脸部肌肉的开关，能精准地控制表情，比如嘴巴张开、眉毛抬起等；第二个适配器则帮助模型直接参考一张真实照片，确保生成的脸不仅表情对，还能保持照片里的发型、背景等细节。训练时，先让模型学习各种丰富的表情变化，再教它如何根据真实照片调整表情。这样做的好处是，生成的脸既像原来的人，又能表现出想要的表情，适合做电影特效、虚拟助手等需要真实感和表达力的场景。 
