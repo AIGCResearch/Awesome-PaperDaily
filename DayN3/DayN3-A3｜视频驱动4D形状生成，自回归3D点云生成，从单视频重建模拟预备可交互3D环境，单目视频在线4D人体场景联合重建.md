@@ -1,0 +1,104 @@
+
+# Topic: 3D/4D Generation 
+## ShapeGen4D: Towards High Quality 4D Shape Generation from Videos 
+2025-10-07｜Purdue , KAUST, Snap 
+
+<u>http://arxiv.org/abs/2510.06208v1</u>  
+<u>https://shapegen4d.github.io/</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/22.jpg)  
+ShapeGen4D提出了一种创新的视频驱动4D动态形状生成框架，能够直接从单目视频端到端生成高质量的动态3D网格序列。该方法突破了传统基于逐帧独立生成或两阶段多视角重建的限制，通过融合大规模预训练的3D生成模型，实现了时间一致性强、细节丰富的动态形状与纹理恢复。核心贡献包括引入时空注意力机制，设计时间感知的点采样与4D潜变量锚定策略，以及跨帧共享噪声以增强时序稳定性。该方法不仅能够准确捕捉非刚性运动、体积变化和拓扑结构变化，还显著提升了鲁棒性和感知质量，减少了常见的几何与纹理伪影。相比现有基线，ShapeGen4D在多样化真实场景视频中的表现更为优越，展示了其在4D形状生成领域的领先地位和广泛应用潜力。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/23.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/24.jpg)  
+ShapeGen4D基于现有强大的3D生成模型Step1X-3D，针对4D任务进行了三大关键设计创新：  
+
+1. **时空注意力机制**：在预训练的3D扩散转换器中插入时空注意力层，跨越所有帧同时处理形状和图像特征，捕捉时间依赖关系，确保生成序列的时序一致性。帧索引通过旋转位置编码融入模型，训练时仅更新新增层，保留预训练权重以防遗忘。  
+2. **时间对齐的点采样与潜变量对齐**：为解决逐帧独立采样导致的潜变量抖动，首次从第一帧网格采样查询点，随后通过动画变形映射保持点在时间上的一致性，确保潜变量对应于动态表面上的相同物理点，极大降低时序噪声。  
+3. **跨帧共享噪声**：扩散模型中通常每帧独立采样噪声会引起运动不稳定。ShapeGen4D通过在训练和推理阶段为所有帧复用相同噪声样本，减少了因噪声差异导致的姿态和形状抖动，提升了整体的时间稳定性和生成质量。  
+此外，生成的网格序列经过全局姿态配准和拓扑一致的纹理映射处理，确保与输入视频的视角对齐及纹理连贯。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/25.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/26.jpg)  
+ShapeGen4D在两个公开数据集上进行了全面评测：包括含真实高质量动画网格的Objaverse持出集和包含真实与合成视频的Consistent4D数据集。几何指标（Chamfer距离、IoU、F-Score）和渲染质量指标（LPIPS、DreamSim、CLIP、FVD）均显示ShapeGen4D优于多种先进基线方法，如L4GM、V2M4和GVFD。定量结果证明其在几何准确性和纹理一致性上的显著提升。定性分析揭示，基线方法存在几何伪影、运动抖动和纹理不连贯等问题，而ShapeGen4D生成的动态网格序列表现出更自然的非刚性变形和更稳定的时序表现。消融实验进一步验证了时空注意力、潜变量对齐和共享噪声各自对性能的贡献，表明这些设计是提升4D生成质量的关键因素。训练策略和数据处理也确保了模型在有限4D数据条件下的有效泛化。
+
+### 通俗易懂  
+ShapeGen4D的核心方法可以比喻成“给动态3D物体拍一部电影”，并且让每一帧的3D模型都能准确对应同一物体的同一部分，避免跳跃和闪烁。具体做法有三点：第一，模型能同时“看”所有帧，理解时间上的变化，确保动作连贯；第二，模型在第一帧选好一批“关键点”，然后跟随物体的运动，把这些点在后续帧里找到对应的位置，这样每帧的3D信息就能对齐，减少抖动；第三，模型在生成过程中给所有帧用同一组随机“噪声”，避免每帧生成时的随机性差异导致的画面跳动。这样，最终输出的动态3D网格就像电影中的连续镜头一样平滑自然，还能准确展现复杂的形变和体积变化。简单来说，ShapeGen4D让机器“看懂”视频里的物体动态，并用稳定的3D模型把它们“活灵活现”地复刻出来。 
+## PointNSP: Autoregressive 3D Point Cloud Generation with Next-Scale Level-of-Detail Prediction 
+2025-10-07｜NUS, NTU, HKU, Cambridge, CUHK, SJTU 
+
+<u>http://arxiv.org/abs/2510.05613v1</u>  
+<u>https://pointnsp.pages.dev</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/27.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/28.jpg)  
+本文针对3D点云生成中的自回归模型性能不足问题，提出了PointNSP，一种基于多尺度细节预测的自回归生成框架。传统自回归方法因需对无序点集进行固定顺序建模，导致生成过程过于局部化，难以捕捉全局形状结构如对称性和拓扑一致性。PointNSP借鉴形状建模中的细节层次（Level-of-Detail, LoD）思想，采用由粗到细的生成策略，在低分辨率保持整体形状结构的同时，逐步细化高分辨率的局部几何细节。该方法通过多尺度分解，兼顾了点云的无序性和自回归模型的顺序依赖性，实现了尺度内丰富的交互且避免了脆弱的固定点序。实验表明，PointNSP不仅首次在自回归范式下达到生成质量的最先进水平，还在参数量、训练和推理效率上优于多种强大的扩散模型，尤其在高密度点云生成中展现出良好的可扩展性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/29.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/30.jpg)  
+PointNSP的核心创新在于多尺度LoD自回归生成机制，具体包括以下几个关键步骤：  
+
+1. **多尺度LoD构建**：通过基于Farthest Point Sampling（FPS）算法自适应下采样，将原始点云分解为一系列由粗到细的多尺度点集合，保证每个尺度的点集均为全局形状的代表，且采样过程保持排列不变性。  
+2. **多尺度特征编码与残差向量量化（RVQ）**：利用置换等变网络（如PointNet++）提取每个尺度的点特征，采用RVQ对特征进行逐层残差编码，形成多尺度的离散token序列，便于后续的离散生成建模。  
+3. **自回归Transformer预测**：设计了支持尺度间因果关系的Transformer结构，允许同一尺度内token全互相注意力，尺度间token则遵循自回归顺序，防止未来信息泄露。引入基于中间重建的3D坐标位置编码，结合位置感知的软掩码机制，增强Transformer对几何结构的理解。  
+4. **逐尺度生成与重建**：模型依次生成从最粗尺度到最细尺度的token，最终通过解码器将多尺度token聚合重建出高质量点云。该过程兼顾了全局结构与局部细节，且避免了传统自回归模型中单点预测的局限。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/31.jpg)  
+在ShapeNet数据集上，PointNSP针对飞机、椅子和汽车三大类进行了全面评测。结果显示，PointNSP在Chamfer距离和Earth Mover距离指标上均优于包括扩散模型（如LION、TIGER）和其他自回归模型（如PointGrow、PointGPT）在内的多种先进方法。轻量版本PointNSP-s已达到竞争水平，中等规模版本PointNSP-m更是刷新了自回归生成质量的记录。效率方面，PointNSP-s训练时间显著缩短，采样速度更快，且模型参数更少，体现了优越的资源利用率。多类别生成任务中，PointNSP同样表现出优异的跨类别泛化能力。此外，在点云补全和点云上采样等下游任务中，PointNSP也展示了其强大的适应性和实用价值。进一步在8192点的高密度生成实验中，PointNSP的优势更加明显，证明了其良好的扩展性和实际应用潜力。
+
+### 通俗易懂  
+PointNSP的核心想法是“先画大致轮廓，再逐渐添加细节”。想象你在画一幅画，先用粗笔勾勒出整体形状，再用细笔描绘细节。传统生成3D点云的方法是一个点一个点地画，顺序固定，容易忽略整体形状的连贯性。PointNSP则是先生成一个非常简化的点云，代表物体的大致轮廓，然后一步步生成更细致的点云层级，每一层都是在上一层的基础上细化。这样，模型在生成时既知道整体形状，也能关注局部细节，使得生成的3D模型更自然、更准确。为了实现这一点，PointNSP先把点云分成多个不同分辨率的版本，每个版本都用特殊的编码方法转成“语言”——一串离散的符号。然后用一种叫Transformer的智能模型，按照从粗到细的顺序预测这些符号，最后再把符号还原成点云。这样不仅保证了点云的无序性（点的顺序不会影响形状），还大大提升了生成速度和质量，尤其适合生成细节丰富的复杂3D物体。 
+# Topic: 3D/4D Reconstruction 
+## HoloScene: Simulation-Ready Interactive 3D Worlds from a Single Video 
+2025-10-07｜UIUC, Intel 
+
+<u>http://arxiv.org/abs/2510.05560v1</u>  
+<u>https://xiahongchi.github.io/HoloScene</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/32.jpg)  
+本文提出了HoloScene，一种基于单个视频输入的交互式3D环境重建框架，旨在生成具备完整几何形状、物理合理性和真实渲染效果的数字孪生场景。该方法突破了传统3D重建在几何完整性、物理交互性和渲染真实性方面的不足，能够从有限视角和部分遮挡中恢复完整场景结构，并保证物体间的物理稳定性。HoloScene采用场景图(scene graph)表示，将物体的几何、外观、物理属性及其层级和相互关系统一编码，为下游实时交互、游戏开发、沉浸式体验和动态视觉特效等应用提供高质量的数字资产。通过综合利用观测数据、物理约束和生成先验，HoloScene实现了多视角联合优化，显著提升了场景的完整性和物理合理性，推动了从现实视频到仿真环境的高保真数字孪生技术发展。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/33.jpg)  
+HoloScene的核心是构建一个交互式3D场景图，节点代表背景或物体，包含神经隐式函数表示的几何形状、基于高斯点云的外观、刚体物理属性及动态状态，边表示物体间的支持、并列和碰撞关系。重建任务被形式化为一个能量最小化问题，结合多模态观测误差（颜色、掩码、深度、法线）、生成模型驱动的几何补全、物理稳定性约束及物体间非穿透性正则化。为解决组合优化与非可导物理仿真难题，方法设计了三阶段推理流程：1）基于梯度的初步优化，恢复可见区域的形状与外观；2）利用多视角生成模型采样多样形状候选，并结合场景图结构进行树搜索，选择满足物理稳定性的最优组合；3）对选定形状和物理参数进行细节调整，优化渲染质量。该方法通过模拟器闭环确保物理稳定，避免穿透和不合理接触，实现了高保真且可交互的3D数字孪生。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/34.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/35.jpg)  
+在Replica、ScanNet++和iGibson等多个室内场景数据集上，HoloScene在几何准确性、物理稳定性和渲染质量方面均优于当前主流方法。定量指标显示其在物体重建比例和物理稳定率上显著领先，尤其在遮挡严重的区域，生成先验辅助的补全能力明显提升了形状完整性。消融实验验证了场景图结构、物理能量项和生成采样对性能的贡献，揭示了物理合理性与像素级观测一致性之间的权衡。失败率分析表明，HoloScene在避免几何错误和物理穿透方面表现更稳健。此外，实际应用演示了其在实时交互游戏、3D编辑和沉浸式体验录制中的广泛适用性，支持物体动态操控和真实物理反馈，进一步体现了系统的实用价值和技术先进性。
+
+### 通俗易懂  
+HoloScene的核心思想是用一个视频来“复刻”一个真实的房间，做成一个可以在电脑里自由玩耍和互动的3D模型。它先把视频里的每个物体都用数学函数描绘出来，形成一个场景地图，记录这些物体的形状、颜色和物理特性，比如重量和摩擦力。然后，系统会根据视频中看到的画面，调整这些物体的形状和位置，确保它们看起来和真实的场景一样，同时不会互相穿透或飘浮在空中。为了补齐视频没拍到的背面或遮挡部分，HoloScene还会“想象”这些隐藏的细节，生成多种可能的形状，再用物理模拟来筛选出最合理的版本。最后，它还会微调物体的颜色和纹理，使得从任何角度看都很真实。这样，用户就能在虚拟世界里像现实中一样搬动椅子、放置物品，甚至录制和重放真实的物体操作，带来沉浸感极强的体验。 
+# Topic: Motion Generation 
+## Human3R: Everyone Everywhere All at Once 
+2025-10-07｜Westlake, Tübingen, MPI-INF 
+
+<u>http://arxiv.org/abs/2510.06219v1</u>  
+<u>https://fanegg.github.io/Human3R</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/36.jpg)  
+本文提出了Human3R，一种统一的端到端框架，实现了基于单目视频的在线4D人体与场景的联合重建。与传统多阶段、多模型依赖且耗时的方案不同，Human3R通过单一前向推理同时估计多人体的SMPL-X参数、稠密三维场景点云及相机轨迹，达成“人人、处处、一次性完成”的目标。该方法基于CUT3R这一4D重建基础模型，利用参数高效的视觉提示调优技术，保持其丰富的时空先验，同时实现多人体直接输出。Human3R训练仅需一天时间，使用单GPU，且具有显著的实时性能（15FPS）和低内存占用（8GB）。实验表明，该方法在全球人体运动估计、局部人体网格恢复、视频深度估计及相机姿态估计等任务上均达到或超越现有最先进水平，展现出强大的泛化能力和实用性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/37.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/38.jpg)  
+Human3R在每个时间步接收RGB图像，目标是在线估计多个人体的SMPL-X网格参数、相机内外参以及稠密场景点云。核心技术包括：  
+
+1. **人体参数化表示**：采用SMPL-X模型，表达人体姿态、形状及表情，结合全局根变换实现世界坐标系下的三维人体重建。  
+2. **4D重建基础模型CUT3R**：该模型通过递归更新固定大小的状态向量，编码场景与人体的时空信息，实现在线增量式点云及相机轨迹恢复。输入图像通过ViT编码为图像tokens，与状态tokens交互更新。  
+3. **视觉提示调优（VPT）**：为减少训练参数，仅对人体相关层进行微调。通过检测图像中的人体头部tokens，结合来自专门人体编码器（Multi-HMR ViT-DINO）的先验信息，生成高信息量的人体提示tokens，作为查询引导模型定位并恢复完整人体网格。  
+4. **人体分割与跟踪**：基于图像tokens预测人体掩码，利用人体tokens特征进行时序匹配，实现多人体在线跟踪。  
+5. **长序列适应**：采用测试时训练策略（TTT3R），动态更新模型状态以缓解长序列推理中的遗忘问题，并周期性重置状态以保持稳定性。  
+该方法在保持CUT3R强大时空先验的基础上，通过人体提示机制实现了多人体与场景的协同重建，支持实时在线推理。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/39.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/40.jpg)  
+Human3R在多项任务上进行了全面评估。局部人体网格恢复实验（3DPW、EMDB-1）显示，其无需人体检测和相机内参即可实现与多阶段方法相当甚至更优的精度，特别是在多人体场景中展现出更高的鲁棒性和效率。全球人体运动估计（EMDB-2、RICH）中，Human3R在精度和轨迹误差方面均优于当前在线和离线方法，且支持实时推理。相机位姿估计与视频深度估计任务中，Human3R结合TTT3R策略进一步提升了精度，且在保持低内存和高速推理的同时，超过了多种基线模型。消融分析表明，人体先验的引入显著提升了人体细节重建质量，且联合人体与场景的训练带来了双向增益。整体来看，Human3R实现了多任务统一建模的突破，兼顾精度、效率和泛化能力。
+
+### 通俗易懂  
+Human3R就像一个聪明的摄像头助手，它能边看视频边“画”出视频里所有人的3D模型和他们周围的环境，还能知道摄像头自己在哪里。它的秘诀是先学会了大量场景和人体动作的“经验”，然后只用很少的新学习，就能快速识别画面中的每个人，并准确还原他们的姿势和动作。它特别关注人体的头部，因为头是识别人和定位的关键。每当摄像头拍下一帧画面，Human3R就把这帧图像变成一堆小“拼图块”，找到头部拼图，再用这些提示拼凑出整个人的3D形状。同时，它还会更新对环境的理解，确保人和环境放在同一个真实世界坐标里。这样，它不仅能快速处理画面里多个人，还能实时跟踪他们和摄像头的位置变化。最棒的是，它不需要复杂的准备工作，速度快，内存小，适合用在机器人、虚拟现实等需要实时互动的场景中。 

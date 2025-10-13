@@ -1,0 +1,102 @@
+# Topic: Image Generation｜Diffusion/Autoregress/VQ 
+## Efficient Conditional Generation on Scale-based Visual Autoregressive Models 
+2025-10-07｜USYD, SJTU 
+
+<u>http://arxiv.org/abs/2510.05610v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/12.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/13.jpg)  
+本文针对视觉自回归（AR）模型在复杂空间条件生成任务中存在的高训练成本和控制难题，提出了一种高效的条件生成框架——高效控制模型（ECM）。当前AR模型虽在图像合成上已能媲美扩散模型，但其条件生成多依赖对预训练模型的微调，计算资源消耗大。ECM通过引入轻量级的分布式控制模块，利用上下文感知的注意力机制实时调整条件特征，避免了对基模型的微调，显著降低了训练和推理成本。此外，针对生成早期阶段对语义结构的关键影响，提出了早期中心采样策略，优先学习早期控制序列，并配合推理阶段的温度调度补偿后期生成不确定性。大量实验验证了ECM在保持高保真度和多样性的同时，超越了现有基线方法，成为空间条件生成任务中的有效解决方案。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/14.jpg)  
+ECM的设计核心包括四部分：  
+
+1. **条件框架设计**：保持预训练AR模型权重冻结，通过轻量控制适配器动态生成控制信号，融合条件与图像令牌，避免语义冲突，确保生成质量。  
+2. **控制模型架构**：控制模块结构与基础Transformer相似，包含AdaLN层、独立自注意力层及共享前馈网络（FFN），以便快速收敛和高效特征整合。  
+3. **高效容量利用**：采用部分层共享策略，所有适配器共享FFN，注意力模块独立，辅以层特定门控机制，实现控制信号的统一表达和层级适应，提升特征连贯性和模型容量利用率。  
+4. **早期中心采样与温度调度**：训练时截断序列，重点学习早期生成阶段的控制信号，减少训练令牌数量；推理时逐步降低采样温度，弥补后期生成信心不足，保证输出质量。这种策略显著降低计算负担，同时强化关键阶段的控制能力。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/15.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/16.jpg)  
+实验部分在ImageNet-1k数据集上，针对边缘、深度和法线图条件展开，采用FID、IS、Precision、Recall及特定任务指标（F1、RMSE）综合评估。ECM在仅使用300M参数基础模型及58M参数控制模型的条件下，优于同类基线ControlVAR（600M参数），且训练周期减半，单轮训练时间仅为对手45%。推理速度接近基础VAR模型，体现极佳的效率。定量结果显示，ECM在多种条件下均实现了更优的空间控制与生成多样性，且其参数效率和训练成本优势明显。消融实验揭示，适配器层数量、共享FFN设计及层特定门控均对性能有积极贡献，早期中心采样在性能与效率间取得良好平衡。视觉对比进一步证实了ECM在空间约束和图像质量上的提升。
+
+### 通俗易懂  
+ECM的核心思想是给已经训练好的大模型“加个小帮手”，这个帮手叫控制适配器。它不改变大模型本身，而是在生成图片时，实时给模型“传话”，告诉它该怎么根据条件（比如边缘图或深度图）生成更符合要求的图片。适配器内部有两个关键部分：一个是专门处理不同层之间复杂关系的注意力机制，另一个是共享的“脑袋”——前馈网络，帮忙整合信息，让控制信号更连贯。训练时，系统重点学习生成图片的“开头部分”，因为这部分决定了整体结构，训练更快更省资源。生成后期，模型可能不太确定，这时通过降低“温度”，让模型更保守地选择更靠谱的结果，保证图片质量。这样一来，模型既聪明又高效，能用更少的时间和算力，生成既准确又漂亮的图片。 
+# Topic: Image Generation 
+## Fine-grained Defocus Blur Control for Generative Image Models 
+2025-10-07｜UMich, Adobe｜⭐️ 
+
+<u>http://arxiv.org/abs/2510.06215v1</u>  
+<u>https://www.ayshrv.com/defocus-blur-gen</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/0.jpg)  
+本文提出了一种创新的基于文本和相机元数据（EXIF信息）驱动的图像生成框架，专注于实现对景深模糊（defocus blur）的细粒度控制。当前主流的文本到图像扩散模型虽然能生成高质量多样化图像，但难以准确反映具体的相机参数如光圈大小，导致无法灵活控制景深效果。该工作通过模拟物理成像过程，先生成全聚焦图像，再结合单目深度估计和一个新颖的焦距预测变换器，利用可微分的薄透镜模糊模型实现模糊效果的生成。此方法能够在保证场景内容不变的前提下，根据光圈和焦距参数精确调节模糊程度和位置，支持用户交互式控制，实现了现有扩散模型难以达到的模糊效果调节能力。实验结果表明该模型在模糊一致性、场景内容保持和图像质量等方面均优于多种基准方法。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/1.jpg)  
+本文方法核心在于解耦场景内容生成与镜头模糊过程，构建了一个端到端可微分的生成管线，主要包含以下几个模块：  
+
+1. **全聚焦图像生成器**：基于DMD2蒸馏的少步扩散模型，生成无模糊的全聚焦图像。  
+2. **单目深度估计**：利用预训练的Metric3Dv2模型提取生成图像的深度信息，作为模糊控制的空间依据。  
+3. **焦距预测变换器**：采用改进的视觉显著性变换器（VST），结合深度图计算加权平均，预测图像的焦距和焦距尺度，确定图像中应保持清晰的区域。  
+4. **可微分薄透镜模糊模型**：基于Wang等人的物理薄透镜模型，结合预测的焦距和光圈参数，计算每像素的模糊核，实现空间变化的景深模糊效果。  
+5. **联合训练策略**：通过无监督的DMD2损失和对比GAN损失，在未配对的浅景深和深景深数据集上训练，弱监督学习焦距尺度，保证模糊效果与光圈参数的单调性和场景内容一致性。  
+此外，框架支持在推理阶段替换不同的镜头模糊模型，增强灵活性和效果表现。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/2.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/3.jpg)  
+实验基于大规模商业图库构建的浅景深与深景深无配对数据集，系统评估了模型在模糊控制和场景内容保持上的性能。通过与多种基线方法对比，包括原始SDXL扩散模型、带有不同镜头模糊模块的生成器、Camera Settings as Tokens等，本文方法在模糊单调性（Blur Monotonicity）、内容一致性（Content Consistency）、LPIPS和FID指标上均表现优异。定量实验显示，本文模型能随着光圈参数变化合理调整模糊程度，且保持图像内容稳定不变。定性结果展示了模型在不同光圈和焦距条件下，前景和背景清晰度的合理切换，生成的图像自然且真实。消融实验验证了焦距预测变换器和镜头模糊模块对性能提升的关键作用。额外实验还展示了模型对不同镜头模糊模块的兼容性，进一步提升了生成图像的细节质量和真实感。
+
+### 通俗易懂  
+这项工作就像给图像生成模型装上了“相机眼睛”，让它不仅能根据文字描述画图，还能根据相机的“光圈大小”决定哪些地方清晰，哪些地方模糊。具体做法是先让模型画出一张所有地方都清晰的照片，再用一个专门的“深度相机”看这张图，判断图里物体离镜头有多远。接着，一个聪明的“焦距预测器”决定哪些物体应该是清晰的焦点。最后，模拟真实相机镜头的模糊效果，给不在焦点的地方加上适当的模糊。整个过程像是先拍一张清晰照片，再用软件调节模糊，效果自然且真实。这样用户只要告诉模型想要的光圈大小，模型就能自动帮你调节图像的清晰和模糊，让生成的图片更像用真实相机拍出来的一样。 
+## AgeBooth: Controllable Facial Aging and Rejuvenation via Diffusion Models 
+2025-10-07｜NKU, CUHK, VIVO 
+
+<u>http://arxiv.org/abs/2510.05715v1</u>  
+<u>https://github.com/HH-LG/AgeBooth</u> 
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/4.jpg)  
+AgeBooth是一种基于扩散模型的可控面部年龄变化方法，旨在实现从单张参考照片生成不同年龄阶段的高质量、身份一致的面部图像。现有扩散模型虽能保持身份一致性，但在精确控制年龄变化方面表现不足，且微调通常依赖昂贵的跨年龄配对数据。AgeBooth创新性地提出了基于少量样本的年龄特定微调策略，结合年龄条件提示融合和基于奇异值分解（SVD）的LoRA融合技术，有效缓解了对大量标注数据的依赖。该方法通过解耦年龄和身份建模，实现了灵活且细粒度的年龄控制，且可作为插件无缝集成至多种预训练身份个性化生成模型。实验结果表明，AgeBooth在年龄控制准确性和图像视觉质量上均优于当前主流的编辑式方法，展现了在个性化年龄生成领域的先进性能和广泛适用性。
+
+### 方法 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/5.jpg)  
+AgeBooth方法核心包括两个阶段：  
+
+1. **少样本年龄特定微调**：针对目标年龄段，利用少量高质量图像对预训练文本到图像扩散模型进行微调，学习该年龄的视觉特征。微调过程中引入身份适配器（ID Adapter），通过跨注意力层注入身份嵌入，确保生成图像在年龄变化的同时保持身份一致。  
+2. **无训练LoRA与提示融合**：为实现跨年龄平滑过渡，AgeBooth设计了融合机制，将不同年龄段微调得到的LoRA模块权重和对应文本提示进行插值。该插值采用两种策略：简单线性插值和基于奇异值分解（SVD）的高效融合，后者能更好地保持图像质量和属性一致性。提示融合则通过对年龄描述的文本嵌入进行加权平均，进一步优化年龄语义引导。整体框架通过解耦年龄和身份模块，实现了灵活、连续的年龄控制，并支持多种身份个性化模型的扩展。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/6.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/7.jpg)  
+实验部分构建了两个代表性年龄组（10-20岁和70-80岁）的定制数据集，结合IMDB-WIKI和公开高质量图像，保证样本多样性和身份平衡。AgeBooth在多种基线模型（InstantID、PuLID、InfiniteYou）上进行测试，结果显示其在年龄准确性和身份保持方面均显著优于传统年龄编辑方法（如SAM、FADING）。通过MiVOLO年龄估计器的定量评测，AgeBooth降低了生成图像与目标年龄的平均绝对误差（MAE），同时在LAION美学评分中取得更高分数，证明了图像自然度和视觉美感的提升。消融实验进一步验证了身份调节因子γ和SVD融合策略对生成质量和年龄控制的关键影响。整体实验充分证明了AgeBooth在少样本条件下实现高质量、连续年龄变化的有效性和优越性。
+
+### 通俗易懂  
+AgeBooth可以看作是给“会画人脸的AI”装上了一个“年龄调节器”。首先，它用少量不同年龄的照片教会AI认识“年轻”和“年老”的样子，这一步类似给AI上一节“年龄认知课”。然后，AgeBooth会把这些“年轻”和“年老”的知识做成两个小工具（LoRA模块），并设计了一种聪明的方法，把这两个工具按比例混合，就像调色盘上混合颜料一样，AI可以画出不同年龄段的脸，而且脸的身份特征不会变，保证是同一个人。为了让AI更好理解“年龄”的概念，AgeBooth还会把描述年龄的文字提示也混合起来，辅助AI生成更自然的年龄变化。这样，即使只有少量训练图片，AI也能灵活地生成从少年到老年的多年龄段照片，且效果真实漂亮，身份特征清晰。简单来说，AgeBooth让AI“懂得变老和变年轻”，还能“认出你是谁”，生成的照片既自然又准确。 
+## Improving Chain-of-Thought Efficiency for Autoregressive Image Generation 
+2025-10-07｜Meta, Cornell, SBU 
+
+<u>http://arxiv.org/abs/2510.05593v1</u>  
+### 概述 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/8.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/9.jpg)  
+本文聚焦于自回归文本到图像生成模型中链式思维（Chain-of-Thought, CoT）推理的效率问题。当前主流方法通过扩展用户输入为详细的推理提示来提升图像质量，但往往引入冗余信息，导致“视觉过度思考”现象，不仅增加计算成本，还可能引入与原始提示矛盾的细节。作者首次系统性识别并量化了这一冗余问题，提出ShortCoTI框架，通过动态长度惩罚机制，显著缩短CoT提示长度，提升推理效率，同时保持甚至略微提升生成图像的质量和文本对齐度。该方法在多个公开基准（如T2I-CompBench和GenEval）上实现了约54%的推理长度缩减和超过1%的准确率提升，开创了视觉CoT推理效率优化的先河。
+
+### 方法 
+  
+本文基于T2I-R1自回归图像生成模型，提出三种缩短CoT长度的策略：  
+
+1. **CapLength**：对推理提示强制截断，限制最大长度，尽管简单但可能丢失关键信息。  
+2. **TargetLength**：引入固定目标长度，超出部分按线性惩罚处理，促进生成接近目标长度的提示。  
+3. **ShortCoTI**（核心方法）：结合强化学习中的Group Relative Policy Optimization（GRPO），设计动态长度惩罚函数，根据任务难度自适应调整惩罚强度。具体来说，任务越简单，惩罚越强，鼓励更简洁的推理；任务越复杂，惩罚减弱，允许更详细的推理。该方法还融合多种奖励模型（人类偏好、目标检测、问答等）防止奖励欺骗，确保推理简洁的同时不损害图像质量和文本对齐。ShortCoTI在训练过程中通过调整长度惩罚权重，实现了推理提示长度与生成质量的最佳平衡。
+
+### 实验 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/10.jpg) 
+![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-12/11.jpg)  
+作者在两个主流文本到图像生成基准GenEval和T2I-CompBench上评估方法效果。实验结果显示，ShortCoTI显著将推理提示长度从93.11词减至41.97词（约54.9%缩减），推理阶段运行时间提升超过50%，整体生成时间缩短约8%。在文本-图像对齐准确率上，ShortCoTI软惩罚版本优于基线模型，尤其在空间关系和多对象组合任务中表现突出。视觉效果方面，ShortCoTI保持了与基线相当甚至更优的美学评分，未因提示简化而牺牲图像质量。定性分析表明，ShortCoTI有效去除冗余和重复描述，减少错误细节和幻觉现象，使生成图像更准确反映输入提示。多模板测试也表明，不同推理路径对结果影响有限，验证了方法的稳定性。
+
+### 通俗易懂  
+简单来说，生成图片时，模型会先把你的文字描述“想得更详细”，再根据这些详细说明画图。但有时它“想得太多”，说了很多没用的废话，不仅浪费时间，还可能画出不该有的东西。ShortCoTI就是帮模型学会“少说多做”，让它根据任务难度自动决定说多少细节。任务简单时，它会提醒模型“别啰嗦”，写短一点；任务复杂时，它会说“可以多说点”，保证画面细节不丢。这个方法用了一种叫强化学习的训练技巧，给模型奖励：说得简洁又准确，奖励就高。最终，模型不仅节省了生成时间，还画得更符合你的描述，画面也更漂亮。就像让一个画家学会抓重点，不浪费笔墨，画出更精彩的作品。 
+
