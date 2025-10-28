@@ -9,7 +9,7 @@
 本研究针对从人类脑部fMRI信号重建复杂视觉场景图像的难题，提出了HAVIR模型。该模型灵感来源于视觉皮层的层级处理机制，将视觉信息分为结构信息和语义信息两条路径分别处理。现有方法在处理复杂场景时难以兼顾低级结构细节和高级语义准确性，主要因为自然场景中低级特征高度异质且高层语义交织混杂。HAVIR通过分离处理这两类信息，分别从空间处理区域提取结构特征，从语义处理区域提取语义嵌入，最后利用一个多模态扩散模型融合生成最终图像。该方法在多个评测指标上显著优于当前最先进技术，尤其在复杂场景的重建质量和语义还原方面表现突出，展示了神经科学与计算机视觉跨学科融合的潜力。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/52.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e81dc6977e3f4adf961891b502cb6264.png)  
 HAVIR由三大核心部分组成：  
 
 1. **结构生成器**：将空间处理区的fMRI体素映射到潜在扩散空间的低维表示，捕获图像的空间布局和边缘信息。训练时结合均方误差和Sobel边缘损失，确保结构细节的准确还原。  
@@ -17,9 +17,9 @@ HAVIR由三大核心部分组成：
 3. **多模态扩散模型**：以结构生成器输出的潜在变量为基础，加入语义提取器提供的双模态CLIP嵌入，通过逐步去噪重建高质量图像。该过程实现了结构与语义的有效解耦和融合，保证图像既具备空间精度又语义丰富。模型采用个体化脑区掩膜，适应不同受试者的神经解剖差异，提升解码精度。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/53.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/54.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/55.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/0e997a0c79b640b3956894c28d3e8e4f.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/529882de7ac9414cb845534e9e131ad6.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/d94ba2dd88ca45caaf27f3570ae225e5.png)  
 实验基于NSD大规模7T fMRI数据集，涵盖八名受试者观看COCO图像。采用个体化脑区掩膜划分空间与语义处理区。实验设计包括统一测试集和个体训练集，保证评估的公平性和泛化能力。重建结果在定性和定量上均优于五种最新方法，特别是在复杂场景的背景纹理、部分遮挡物体及小尺寸目标的表现上更为出色。多层次评测指标涵盖像素相关性、结构相似度、中级纹理特征和高级语义一致性，HAVIR在多数指标上取得最佳或次佳成绩。消融实验验证了结构先验和语义引导的互补性，缺一不可。此外，模型通过权重反向映射揭示了各脑区对结构和语义解码的贡献，体现了跨受试者的适应性和个性化解码策略。
 
 ### 通俗易懂  
@@ -29,11 +29,11 @@ HAVIR由三大核心部分组成：
 
 <u>http://arxiv.org/abs/2510.03075v2</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/56.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/3aca05db784b4d34a2d64efbd8dec197.png)  
 本文聚焦视觉生成模型中的组合泛化能力，即模型能否生成训练中未见过的已知概念的新组合。当前视觉生成模型虽能生成高质量图像和视频，但其组合泛化表现参差不齐。通过对比两种主流模型MaskGIT和DiT，发现它们在生成“非微笑金发男性”等新组合时表现迥异，揭示了组合泛化的关键驱动因素。研究将生成模型拆解为三个核心组件：编码器（Tokenizer）、生成模型和条件信号，围绕这三者展开系统实验，探讨设计选择如何正负影响组合泛化。核心结论指出，训练目标若作用于连续分布，且训练时条件信号提供完整的组成概念信息，则模型更易实现稳健的组合泛化。基于此，提出在MaskGIT的离散训练目标上增加辅助的连续型JEPA目标，有效提升其组合泛化能力，推动视觉生成模型向更具系统性和创造性的方向发展。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/57.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/c5ea8c8669744a0e985207d6ddbec781.png)  
 本研究设计了一套系统实验框架，逐步剖析影响视觉生成模型组合泛化的关键设计因素，具体方法包括：  
 
 1. **模型拆解与设计变量控制**：将生成流程分解为Tokenizer（VAE与VQ-VAE）、生成模型（连续分布vs离散分布，扩散损失vs掩码损失）和条件信号（完整vs量化或不完整信息），通过逐一替换这些变量，观察组合泛化性能变化。  
@@ -43,8 +43,8 @@ HAVIR由三大核心部分组成：
 5. **定量与机制分析**：通过线性探针评估生成内容的因素准确性，并利用机制解释技术测量注意力头的多义性及神经元的因果影响，揭示辅助目标带来的表示结构改善。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/58.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/59.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/6403889b9a3d410b8fb1d9060fdf8733.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/acae103f14b943e19035838e6b3f37e4.png)  
 实验基于多个数据集（包括Shapes2D合成图像、CelebA人脸属性及视频数据集CLEVRER-Kubric）展开，采用条件生成任务训练模型在部分组合上，测试其对未见组合的生成能力。主要实验发现：  
 - **Tokenizer类型无显著影响**：无论VAE还是VQ-VAE，DiT均能实现良好组合泛化，说明编码方式不是关键因素。  
 - **训练目标与输出空间决定性**：连续输出空间（DiT、MAR、GIVT）模型在组合泛化上显著优于离散输出（MaskGIT），且掩码训练目标并非限制因素。  
@@ -60,11 +60,11 @@ HAVIR由三大核心部分组成：
 
 <u>http://arxiv.org/abs/2510.03191v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/60.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/a5c3d3e6db9b4b07b99ed3a10745eef2.png)  
 本文提出了PQGAN，一种基于产品量化（Product Quantisation, PQ）的高质量图像合成潜空间表示方法。传统的向量量化（Vector Quantisation, VQ）在高维潜空间学习中存在训练信号稀疏、收敛缓慢和冗余度高的问题。PQGAN通过将潜向量划分为多个子空间，分别独立量化，形成一个组合式的虚拟码本，大幅提升了表示能力和训练效率。该方法不仅在图像重建质量上显著优于现有量化和连续潜空间技术，实现了PSNR从27dB提升至37dB，且在FID、LPIPS和CMMD等感知质量指标上提升高达96%。此外，PQGAN可无缝集成到预训练的扩散模型中，实现更高分辨率的生成或更快的生成速度，极大地提高了潜空间离散表示在图像生成中的实用性和扩展性。本文还深入分析了码本大小、嵌入维度和子空间划分的关系，揭示了PQ与VQ在维度扩展上的相反性能趋势，为超参数选择提供了理论指导。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/61.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/c1928fb366304b5d85ef4010e08859f0.png)  
 PQGAN基于VQGAN架构，将传统的单一向量量化模块替换为产品量化模块，具体方法包括：  
 
 1. **向量量化基础**：传统VQ通过一个码本将每个潜向量替换为最近的码字，维度越高训练越困难，码本学习信号稀疏。  
@@ -74,8 +74,8 @@ PQGAN基于VQGAN架构，将传统的单一向量量化模块替换为产品量�
 该方法有效解决了高维潜空间的训练难题，同时保持了低空间分辨率带来的计算优势，适合扩散模型等生成任务。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/62.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/63.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2b0dfb447a5b42bfb2421d68f90a5623.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/c316e34b08bc40deb22439cb036ec6b3.png)  
 实验部分系统评估了PQGAN在重建质量、码本利用率及生成性能上的表现。首先，通过调节潜向量维度d、子空间数S和码本大小K，发现PQ与传统VQ在维度扩展上的表现截然不同：VQ维度增大性能下降，而PQ维度增大性能提升，且子空间数达到d/2时性能趋于饱和。码本利用率指标显示PQ在高维量化下依然能保持高效且均匀的码字使用。其次，PQGAN在ImageNet 256×256数据集上与多种最先进的量化和连续潜空间方法对比，PQGAN以128维、512码本的配置实现了37.4dB的PSNR，FID低至0.036，显著领先。迁移到FFHQ和LSUN数据集时，PQGAN同样表现出优异的泛化能力。最后，将PQGAN潜空间集成到Stable Diffusion 2.1中，展示了在保持生成速度和内存成本不变的情况下，分辨率提升一倍或生成速度提升四倍的可能，验证了PQ潜空间的实用价值。
 
 ### 通俗易懂  
@@ -85,11 +85,11 @@ PQGAN的核心想法是把一个大“拼图”分成很多小块，分别给每
 
 <u>http://arxiv.org/abs/2510.02654v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/64.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b7f7e1f18d74463f8ca53c1422363022.png)  
 本文针对流匹配（flow-matching）生成模型在强化学习中的应用难题，提出了一种名为Smart-GRPO的高效噪声采样优化方法。流匹配模型以其训练稳定和确定性采样的优势，在文本生成图像领域表现优异，但其确定性特性限制了强化学习中策略优化所需的随机性。现有方法通过随机噪声扰动引入随机性，但效率低下且训练不稳定。Smart-GRPO创新性地将噪声采样视为优化变量，利用奖励信号指导噪声分布的迭代更新，优先采样高奖励噪声，从而加速强化学习收敛并提升生成图像质量。该方法无需修改模型架构，易于集成到现有的强化学习与人类反馈训练流程中，为流匹配模型的高效人类偏好对齐提供了实用路径。  
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/65.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/878c16a0f4bf4087b57f0c0166f49592.png)  
 Smart-GRPO基于Flow-GRPO框架，核心在于优化噪声扰动的采样分布以提升策略优化效率。具体步骤包括：  
 
 1. **初始化噪声分布**：以均值为零、单位方差的高斯分布作为初始噪声采样空间。  
@@ -100,7 +100,7 @@ Smart-GRPO基于Flow-GRPO框架，核心在于优化噪声扰动的采样分布�
 此方法通过交叉熵法（CEM）式的迭代搜索，有效平衡探索与利用，避免了随机噪声带来的训练信号浪费，实现了强化学习中更稳定和高效的策略优化。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/66.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/8316b977f8634473a57a60b820f2a774.png)  
 实验部分对Smart-GRPO在文本到图像生成任务中的表现进行了系统评估。采用了ImageReward和Aesthetic Score两种奖励函数，分别衡量语义对齐和视觉美学效果。基线包括未微调的Stable Diffusion模型及使用Flow-GRPO微调的模型。结果显示，Smart-GRPO在奖励优化和生成质量上均优于基线，训练过程更稳定且收敛速度更快。消融实验验证了迭代细化和贪婪噪声选择对性能提升的关键作用，随机选择噪声导致训练不稳定甚至崩溃。此外，敏感性分析表明迭代次数的增加显著提升性能和训练稳定性，五次迭代达到较佳平衡。虽然方法依赖于奖励函数的准确性，且早期噪声层的奖励估计存在局限，但整体实验结果证明了Smart-GRPO在强化学习中优化流匹配模型噪声采样的有效性和实用性。  
 
 ### 通俗易懂  
@@ -114,7 +114,7 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 本文探索了生物神经系统中遵循Dale定律的学习机制与生成模型之间的联系。Dale定律指出，兴奋性和抑制性突触在学习过程中不会互换角色，导致突触权重呈对数正态分布。然而，传统的梯度下降方法并不符合这一规律。作者基于指数梯度下降（EGD）与几何布朗运动（GBM）之间的数学联系，提出了一种基于GBM的乘法去噪扩散模型。该模型通过反向时间随机微分方程（SDE）的离散化，导出了与EGD更新规则结构相同的乘法采样更新方案。进一步，作者设计了适用于对数正态分布数据的乘法得分匹配损失函数，使得该生成模型能够有效学习图像数据的概率分布。该工作首次将生物启发的乘法更新机制引入生成模型领域，拓展了扩散模型的理论与应用边界。  
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/67.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b9fb57ff6cf2413993367434045b373e.png)  
 本文方法主要分为以下几个核心步骤：  
 
 1. **生物启发的优化机制**：基于Dale定律，采用指数梯度下降（EGD）保证权重符号不变，权重分布趋向对数正态。EGD的乘法更新形式与GBM的采样过程紧密相关。  
@@ -124,8 +124,8 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 5. **神经网络训练**：利用乘法去噪得分匹配损失训练神经网络逼近得分函数，支持基于乘法更新规则的样本生成。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/68.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/69.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/8572ed994f87456fb5b7ec5beec17011.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/d08db6592c834375a5aae583bc0195be.png)  
 作者在MNIST、FashionMNIST和Kuzushiji三个图像数据集上验证了所提乘法去噪扩散模型的生成能力。实验结果显示，该模型能够生成清晰且多样化的样本，表现出良好的生成质量和稳定性。与传统基于加性噪声的扩散模型相比，乘法模型在保持数据非负性和符合生物学分布特性方面具有天然优势。模型训练过程中，乘法得分匹配损失有效引导神经网络学习对数正态数据的概率结构，提升了采样效率和生成效果。此外，实验还验证了该方法对Dale定律的遵循，权重分布符合对数正态，支持了理论推导的合理性。综上，实验充分证明了该生物启发乘法扩散模型在图像生成任务中的实用性和创新性。  
 
 ### 通俗易懂  
@@ -137,12 +137,12 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 <u>http://arxiv.org/abs/2510.03089v1</u>  
 <u>https://github.com/naresh-ub/unlearnable_samples</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/70.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/1820e0ec89b3486ca105820bf019451f.png)  
 本文针对文本到图像扩散模型在个性化定制过程中存在的未经授权使用和隐私泄露问题，提出了一种新颖的防护机制。当前个性化技术能够利用少量用户图像快速高质量地定制模型，但也带来了版权和数据隐私的风险。已有的“不可学习”样本生成方法多在像素空间添加噪声，导致图像质量下降且易被净化攻击破解。本文创新性地在扩散模型的潜在空间中进行扰动，通过改变去噪轨迹的起点，生成视觉上与原图高度相似但对下游个性化任务无效的样本，有效防止未经授权的模型微调和复制。该方法兼顾了图像的不可察觉性与抗净化攻击能力，填补了现有技术在鲁棒性和视觉质量上的不足，保障了版权方和内容创作者的权益。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/71.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/72.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/cbc1f59162d84cdcb9b8a947dea1bc29.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/c952f63a0d0944c7bef2f3a6d9251fc2.png)  
 本文方法基于潜在扩散模型（Latent Diffusion Models, LDM），核心思想是对扩散过程中的潜在表示进行结构化扰动，具体步骤包括：  
 
 1. **潜在反演**：将输入图像编码为潜在空间的噪声向量，即扩散过程的终止状态。  
@@ -153,8 +153,8 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 该方法利用少步去噪的特性，避免了多步去噪的过度恢复，确保扰动信息在重构过程中得以保留，实现了扰动的隐蔽性和鲁棒性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/73.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/74.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/c84856a050744949827d25fb8e15e559.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/87528df63bbe413280e775885f7e3285.png)  
 实验在四个公开数据集（CelebA-HQ、VGGFace2、WikiArt和DreamBooth）上进行，涵盖人脸和非人脸图像。结果显示，本文方法在图像质量指标（PSNR提升8dB以上，SSIM和FID显著优于对比方法）和个性化抵抗指标（身份匹配度显著下降，检测失败率大幅提升）上均取得领先。对比了多种现有基于像素空间扰动的方法，本文方法生成的样本在视觉上更自然且更难被DiffPure等强净化攻击恢复。跨不同版本的Stable Diffusion模型测试，方法表现出良好的泛化能力。消融实验揭示，扰动幅度和去噪步数的合理选择对性能至关重要，10/255的扰动预算和4步去噪为最佳组合。定量和定性分析均证明该方法在保护版权和隐私方面的实用价值和鲁棒性。
 
 ### 通俗易懂  
@@ -164,14 +164,14 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 
 <u>http://arxiv.org/abs/2510.02384v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/75.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/76.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/30d80024633f45b7857c579528c57914.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/93677386c0304f61aa5c899ba17ce883.png)  
 随着生成式人工智能（Gen-AI）技术的迅猛发展，尤其是在图像生成领域，AI生成的高质量图像广泛应用于艺术创作、内容生产等多个领域。然而，这也带来了知识产权保护、内容真实性验证以及责任追踪等严峻挑战。数字水印技术作为一种嵌入隐藏信息以验证图像来源和版权的手段，成为解决这些问题的关键工具。本文全面综述了AI生成图像水印技术的现状和发展，聚焦五大核心维度：（1）图像水印系统的形式化定义；（2）多样化水印技术的分类与比较；（3）视觉质量、容量和可检测性等评估方法；（4）针对恶意攻击的脆弱性分析；（5）当前面临的挑战与未来发展方向。通过系统性梳理，文章旨在为研究者提供对AI图像水印技术的全局理解，推动该领域的安全性和鲁棒性发展。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/77.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/78.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/79.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/ec8124c902374db6a7c9d241d6cb0264.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/9c88a8a2b5d04c4c98e5a9c413e797b7.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/870cb37a1bdb4c6f87a6f7bafc26befb.png)  
 本文将AI生成图像水印系统形式化为七个核心模块：密钥生成（Setup）、编码（Code）、内容生成（Gen）、水印嵌入（Embed）、攻击通道（Channel）、水印提取（Extract）和验证（Verify）。  
 
 1. **密钥与编码**：通过密码学密钥生成安全秘钥，用于派生水印载体和掩码，保证嵌入和验证的安全性。编码模块将消息转为带冗余的码字以提升鲁棒性。  
@@ -182,7 +182,7 @@ Smart-GRPO的核心思想是“聪明地选择噪声”。在流匹配模型中�
 该方法体系兼顾嵌入的隐蔽性、鲁棒性和安全性，适应生成式模型的特性，提供了一个统一且系统化的设计框架。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-09/80.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/93e82bae46104c9c94e0c4d0a420bbcc.png)  
 本文通过大量实验评估了不同水印技术在视觉质量、容量和检测准确性方面的表现。实验设计涵盖多种攻击场景，包括常见图像变换（如裁剪、压缩、旋转）和针对性攻击（如利用其他生成模型再生成图像以去除水印）。结果显示，生成内嵌式水印（如潜变量或模型参数扰动）在保持图像自然性的同时，表现出较强的鲁棒性和防伪能力。相比之下，传统后置像素或频域水印更易受常规图像处理影响。安全性实验则通过模拟攻击者尝试伪造或非法提取水印，验证了基于密钥的系统设计在防止伪造和非法读取方面的有效性。此外，实验还考察了水印容量与图像质量的权衡，确认合理设计可实现高容量且不影响视觉体验。整体实验为水印系统的实际部署提供了理论和实践依据。
 
 ### 通俗易懂  

@@ -7,13 +7,13 @@
 <u>http://arxiv.org/abs/2510.05091v1</u>  
 <u>https://structvisuals.github.io</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/50.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e8912433282049c0bfa430a19e2f5a4c.png)  
 当前视觉生成模型在自然图像生成上表现优异，但在生成和编辑结构化视觉内容（如图表、数学图形、科学示意图）方面仍显不足。结构化视觉不仅要求图像美观，更需精确的构图规划、文本渲染和多模态推理以确保事实准确性。本文首次系统性地研究结构化图像的生成与编辑，涵盖数据构建、模型训练及评测基准。研究团队构建了一个包含130万高质量结构化图像对的数据集，数据来源于可执行绘图代码，并辅以链式思维推理注释。基于此数据，训练了一个结合视觉语言模型（VLM）和FLUX.1 Kontext的统一模型，通过轻量级连接器增强多模态理解能力。为评估模型性能，设计了包含1700多个挑战样本的StructBench基准及专门的StructScore评测指标，采用多轮问答方式细致测评生成图像的事实准确度。实验结果显示，尽管闭源系统表现领先，但整体性能仍有较大提升空间，且推理增强的模型在编辑任务中表现突出。通过公开数据集、模型和基准，推动结构化视觉领域的多模态基础模型发展。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/51.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/52.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/53.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2fcedb723aab487da933b5785732838a.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/ebf91719e2c14e9797785f04b6fc1ad3.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/c16fbfb94ee6418b8603e2c26462c9a7.png)  
 本研究方法主要包含三个核心部分：  
 
 1. **数据构建**：收集约200万条结构化图像绘制程序（Python、LaTeX等），执行代码生成源图像。利用GPT-5分析源图像，提取视觉显著特征，生成对应的图像编辑和代码编辑指令，执行代码编辑获得目标图像，实现严格的代码与图像对齐。数据经过多重过滤，确保高质量和丰富注释，最终形成130万对结构化图像数据。每个样本配备链式思维推理注释，提供详细的生成和编辑推理路径。  
@@ -21,8 +21,8 @@
 3. **训练策略**：采用三阶段渐进式训练。第一阶段冻结骨干，仅训练连接器，实现特征对齐；第二阶段引入结构化图像数据联合微调骨干和连接器，采用基于掩码的损失加权策略，减轻背景和未变区域的影响，提升对结构化视觉的适应能力；第三阶段利用链式思维注释作为长上下文输入，注入显式推理能力，增强模型复杂任务的理解与生成能力。推理时进一步结合外部推理器，分步分析输入并指导生成，提升生成准确性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/54.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/55.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/f8273e1ff53d4ea4a882269b24811208.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/bd5bfb5527b546a99971b8ae1d68f8dd.png)  
 实验评测涵盖15个主流开源与闭源模型，分别在结构化图像生成（StructT2IBench）和编辑（StructEditBench）两个基准上测试。结果显示，闭源模型整体表现优于开源模型，但即便是最先进的系统准确率也仅约50%-55%，显示结构化视觉任务的挑战性。训练数据的规模和质量对性能影响显著，本文模型在编辑任务上取得最高准确率，验证了数据驱动的重要性。不同视觉编码器和模型架构对性能影响不一，无明显优胜者。细分任务中，简单编辑（如颜色调整）准确率较高，复杂编辑（如图表类型转换）准确率显著下降，体现推理能力的关键作用。引入推理增强机制后，所有模型性能均有明显提升，尤其是在复杂编辑任务中，验证了推理推断在结构化视觉生成中的价值。评测指标StructScore通过多轮问答细粒度评估图像事实准确性，显著优于传统视觉相似度指标。实验结果表明，结构化视觉生成与编辑亟需结合推理能力和高质量数据支持。
 
 ### 通俗易懂  
@@ -32,12 +32,12 @@
 
 <u>http://arxiv.org/abs/2510.03341v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/109.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/478257cb98904e72ac9612ed9698e0a7.png)  
 本文针对动态图表生成（Dynamic Chart Generation, DCG）任务，提出了首个专门评测多模态大语言模型（MLLM）在该领域能力的基准——DCG-Bench。动态图表相比静态图表，具有更高的信息密度和更丰富的动画叙事效果，广泛应用于视频制作和交互网页等场景，但现有研究多聚焦于静态图表生成，动态图表代码生成尚未充分探索。DCG-Bench涵盖三种任务类型：详细文本到图表（D2C）、简单文本到图表（S2C）和视频到图表（V2C），通过8K高质量样本构建数据集DCG-8K，包含指令、代码、视频及对应的问答对，支持从代码和视频两方面评价生成质量。实验揭示现有MLLM在视觉输入驱动的动态图表生成上表现不足，本文提出的训练方法显著提升模型性能，且以3B参数模型实现与大型专有模型相当的效果，推动动态图表生成技术发展。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/110.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/111.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/928ce8418762490dbfc83b25f3234e62.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/06428099daa341daa2e93688e4c1afec.png)  
 本文设计了一个两阶段训练流程以构建高效的动态图表生成MLLM，核心方法包括：  
 
 1. **监督微调（SFT）**：利用DCG-8K中详细文本到图表（D2C）和视频到图表（V2C）任务数据，对基础模型Qwen2.5-VL-3B进行微调，提升模型对复杂动态图表代码的生成能力。简单文本任务（S2C）未参与训练，用于测试模型泛化。  
@@ -46,8 +46,8 @@
 该训练方案通过结合文本和视觉信号的多模态强化学习，增强模型对动态动画细节的理解和表达能力，实现跨任务和跨模态的知识迁移。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/112.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/113.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/4409c5d75e294f66874074a2e25e1f0d.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/081349ed01f14677b1f055cd7f6f7a09.png)  
 在DCG-Bench的三大任务上，本文方法构建的Qwen2.5-DCG-3B模型表现出显著优势。与主流专有模型如GPT-4.1、Claude和Gemini-2.5-Pro相比，Qwen2.5-DCG-3B在执行率和问答评分上均有竞争力，尤其在视频到图表任务中表现突出，超越了多数开源和部分专有模型。实验还验证了两阶段训练的有效性：SFT阶段为模型提供基础能力，JCVR-GRPO阶段进一步提升性能和泛化，避免了单纯监督微调的过拟合问题。消融研究表明，训练数据中同时包含详细文本和视频任务样本能显著提升模型的多任务表现；奖励函数中代码与视频质量的合理权重分配对性能提升至关重要。用户研究和错误分析进一步支持了模型生成代码的准确性和视觉效果的优越性，显示出该训练方法在动态图表生成领域的实用潜力和推广价值。
 
 ### 通俗易懂  
@@ -58,12 +58,12 @@
 
 <u>http://arxiv.org/abs/2510.04225v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/105.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/f6bfb5b10fbf4e69b1721a1a28417ff3.png)  
 随着AI图像生成技术的迅猛发展，真实与合成图像的界限日益模糊，数字内容的真实性验证变得尤为重要。现有基于视觉语言模型（VLMs）的检测方法虽具解释性，但往往难以捕捉高质量合成图像中的细微伪迹，且多采用单次全局分析，导致关键局部线索被忽略。本文提出ZoomIn，一种模仿人类视觉检查的两阶段图像取证框架：首先对整图进行扫描，定位疑似合成区域；然后聚焦放大这些区域，进行细致分析，输出基于视觉证据的判定和解释。为训练此模型，构建了包含2万张真实与高质量合成图像的MagniFake数据集，配备了边界框和细粒度取证解释。实验表明，ZoomIn在准确率（96.39%）和泛化能力上显著优于现有方法，且能提供直观、基于图像细节的解释，推动了AI生成图像检测向更具解释性和精细化的方向发展。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/106.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/107.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/4c338de376764c91b0ea036dde6dfe37.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/a551bf2de08d40089217c00e695fd8b8.png)  
 ZoomIn框架核心在于两阶段推理流程，模拟人类专家的视觉放大检查：  
 
 1. **全局扫描（Query1）**：输入整幅图像，VLM输出初步判定（真实/合成）、疑似区域的边界框及初步解释，重点识别对生成模型难以复现的区域（如细节丰富的人脸、手部、文字等）。  
@@ -71,7 +71,7 @@ ZoomIn框架核心在于两阶段推理流程，模拟人类专家的视觉放�
 为支持训练，设计了自动化数据注释流程：利用GPT-4o生成细粒度取证解释，Qwen-2.5-VL模型从解释中提取空间定位信息，形成带有图文结合的(I,E,B,C)训练元组。训练采用监督微调与基于BLEU指标的强化学习相结合的策略，提升模型在判定准确性和解释质量上的表现。该方法有效结合了视觉与语言的推理能力，强化了空间定位和多步验证机制。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/108.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e9625fe802ce47f28cfffbb4d37b5ccb.png)  
 在MagniFake测试集上，ZoomIn的7B和32B模型分别实现了94.2%和97.2%的检测准确率，显著优于包括LEGION和FakeShield等多种基线方法。通过两阶段的放大机制，模型在约10%的样本中纠正了初步判定，显示出较强的细节复核能力。解释质量指标BLEU和ROUGE-L均随放大机制提升，说明模型生成的解释更贴近人工注释。跨域测试（GenImage、MMFR、SynthScars）进一步验证了ZoomIn的泛化能力，32B模型平均准确率达90.8%。消融实验表明，去除放大机制或随机裁剪显著降低性能，强调了智能定位可疑区域的重要性。限制边界框数量过多也会影响效果，表明合理控制关注区域数目是关键。定性分析展示了模型在光照异常、解剖结构异常、纹理伪迹等典型合成特征上的敏感性，同时揭示了在极高真实感图像上的挑战。
 
 ### 通俗易懂  
@@ -82,13 +82,13 @@ ZoomIn方法就像一个细心的侦探在检查一张照片。第一步，侦�
 <u>http://arxiv.org/abs/2510.03308v1</u>  
 <u>https://jl6017.github.io/GenMech/</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/114.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/115.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/02179145ccb048ddb65112297a6616ea.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/24544ce936ad4079ba8e2b8cbeeb514c.png)  
 本文将平面连杆机构的运动学综合问题重新定义为跨领域的图像生成任务，提出了一种基于图像的统一表达框架。研究团队构建了覆盖多种机构类型（从简单的曲柄摇杆到复杂的八杆机构如詹森机构）的RGB图像数据集，利用图像同时编码机构结构与运动轨迹，并引入颜色渐变表示轨迹点的绘制速度，实现了运动轨迹形状与速度的联合条件合成。该方法通过共享潜在空间的变分自编码器（VAE）模型，能够在机构图像和轨迹图像之间实现双向转换，支持从轨迹生成机构设计及从机构推断运动轨迹。此研究突破了传统依赖图结构或关节坐标列表的限制，实现了跨多种机构类型的泛化。实验验证了该图像生成框架在不同复杂度数据集上的有效性，展示了其在机械设计自动化和机器人运动规划中的潜力。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/116.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/117.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/09e5cd388d3c4c56914f3bbb0b87372d.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/a49834acf45640b6b8eb28671efb3e65.png)  
 本研究核心方法基于共享潜在空间的变分自编码器（VAE）架构，具体包括以下几个关键部分：  
 
 1. **图像编码与解码**：设计两个编码器分别处理轨迹图像和机构图像，两个解码器对应重建各自输入。轨迹图像通过颜色编码速度信息，机构图像通过预定义颜色区分不同连杆和关节。  
@@ -98,8 +98,8 @@ ZoomIn方法就像一个细心的侦探在检查一张照片。第一步，侦�
 5. **训练与推断**：模型通过端到端训练学习潜在空间表示，推断时可实现轨迹到机构的合成及机构到轨迹的分析，支持双向生成。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/118.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/119.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/6fa254a679f74ba78b0c8010ab850bab.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/30458ac733024fd4b163870d4196c741.png)  
 实验部分采用三个不同复杂度的数据集验证模型性能：包含10万条四杆机构轨迹的简单集，20万条混合四杆与曲柄滑块机构的中等复杂集，以及包含多环复杂机构的子集。实验任务包括轨迹到机构的合成、机构到轨迹的分析，以及两阶段的合成-分析闭环生成。结果显示，基于视觉Transformer（ViT-base）模型在图像重建精度（PSNR指标）上优于传统ResNet和轻量ViT模型，且整体性能随机构复杂度提升而保持稳定。消融实验表明颜色编码、完整损失函数及跨域损失对性能贡献显著。定性展示了模型生成的机构与轨迹高度吻合真实样本，且通过3D打印实物验证了设计的可行性。实验充分证明了图像表示及共享潜在空间VAE框架在机械运动学综合中的有效性和通用性。
 
 ### 通俗易懂  
@@ -110,11 +110,11 @@ ZoomIn方法就像一个细心的侦探在检查一张照片。第一步，侦�
 
 <u>http://arxiv.org/abs/2510.03302v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/124.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/aad0d1b041ac422a904d34f5233d59c2.png)  
 本文聚焦于文本到图像（T2I）扩散模型中的概念擦除技术，这类技术通过抑制模型生成不当或受版权保护内容来保障安全。然而，随着模型架构从传统的UNet向基于Flow Matching和Transformer的“Flux”家族演进，现有的擦除方法（如ESD、UCE、AC）效果显著下降。研究发现，所谓的“擦除”并非真正删除知识，而是通过修改模型权重引导采样轨迹偏离特定概念区域，形成一种“假性失忆”。基于此，作者提出了RevAm框架，利用强化学习（RL）动态调整采样过程中噪声预测的速度场，逆转擦除效果，实现被擦除概念的恢复。该方法无需修改模型权重，通过对采样轨迹的精细控制，显著提升恢复质量并大幅缩短计算时间，暴露了当前安全机制的根本脆弱性，呼吁开发更为稳健的知识移除技术。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/125.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/a355577f85274a7a9f27bcce70285784.png)  
 RevAm的核心在于将概念恢复视为一个序贯决策问题，通过RL优化采样轨迹的速度场调整策略。具体包括以下关键步骤：  
 
 1. **速度场干预建模**：在每个采样步骤，模型预测的速度向量（噪声方向和幅度）被政策网络调整。动作由两个参数构成：幅度缩放ρ和方向旋转ϕ，动作空间被限制在小范围内以保证稳定性。  
@@ -123,8 +123,8 @@ RevAm的核心在于将概念恢复视为一个序贯决策问题，通过RL优�
 4. **无权重修改的推理时控制**：策略在推理阶段动态调整速度场，无需修改模型本体，实现在生成过程中实时引导采样轨迹回归被擦除的概念区域。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/126.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/127.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/a084878ef8544da5ace5c200a865baa6.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/685cd98158df460fbfe3fceefc3c8726.png)  
 作者在Flux.1 [dev]模型及多种主流概念擦除方法（如ESD、AC、EA、EAP）上进行了全面评估，涵盖NSFW内容（裸露、暴力）、艺术风格（梵高、毕加索）、实体、抽象概念及关系等多个类别。实验结果显示，RevAm在攻击成功率（ASR）上显著超越现有方法，恢复被擦除的概念更加精准且多样，且计算效率提升约10倍。此外，消融实验验证了联合优化幅度和方向参数及双重奖励设计的必要性，进一步提升了恢复速度和质量。定量指标和视觉示例均表明RevAm在各种复杂概念恢复任务中表现出更强的泛化能力和鲁棒性，揭示了现有擦除策略的根本缺陷，强调了未来开发真正“删除”知识的必要性。
 
 ### 通俗易懂  

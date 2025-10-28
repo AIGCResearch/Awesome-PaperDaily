@@ -5,12 +5,12 @@
 
 <u>http://arxiv.org/abs/2510.04188v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/17.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/18.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/292596b3807f42db9f0b20f6130f3000.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/64b202c4b1cb41dcbf1f2856020bc4b5.png)  
 本文针对扩散变换器（Diffusion Transformers, DiTs）在图像和视频合成中虽具高质量表现但推理过程缓慢的问题，提出了一种基于特征缓存的加速策略。传统特征缓存方法对所有特征维度采用统一策略，忽视了特征维度间动态演化的异质性。通过深入分析，作者发现不同特征维度呈现出多样的时间动态，有的维度波动剧烈，表现为刚性或多模态行为，有的则平滑稳定。基于此，提出HyCa，一种混合常微分方程（ODE）求解器启发的特征缓存框架，按特征维度动态聚类并为每类分配最合适的求解器，实现了训练无关的高效加速。HyCa在多个模型和任务上均实现了5倍以上的加速，且保持了接近无损的生成质量，兼容蒸馏模型，展现出优越的泛化能力和实用价值。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/19.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/f6d63f026cbe458da88fe006015dacd1.png)  
 HyCa方法核心在于将特征缓存视为解决隐藏特征随时间演化的ODE问题，具体步骤包括：  
 
 1. **特征动态分析与聚类**：通过提取每个特征维度的时间动态指标（如差分、曲率等），利用无监督聚类将特征维度划分为若干动态行为相似的簇。实验表明，这些簇在不同输入、分辨率及时间步之间高度稳定。  
@@ -19,8 +19,8 @@ HyCa方法核心在于将特征缓存视为解决隐藏特征随时间演化的O
 4. **推理加速**：在推理阶段，每个特征簇使用对应求解器预测未来时间步特征，避免重复计算，显著降低计算开销，同时保持高精度。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/20.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/21.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/deb1e5dd00b7495a89195e19a1538ed2.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/2ed379b0fa3a4e0989883055540fe5b2.png)  
 作者在多个扩散变换器模型及任务上验证了HyCa的性能，包括文本到图像（FLUX、Qwen-Image）、文本到视频（HunyuanVideo）及图像编辑（Qwen-Image-Edit）。实验结果显示，HyCa在不同加速倍率下均优于现有特征缓存方法，既提升了加速比（最高达6.24×），又保持或提升了图像质量指标（ImageReward、CLIP分数、PSNR等）。在视频任务中，HyCa同样实现了5.56×加速且维持较高的VBench评分。图像编辑任务中，HyCa在多种编辑类型上表现最佳，超越竞争对手。更重要的是，HyCa与蒸馏模型兼容，能在极限加速（如4步采样）下实现超过20倍的速度提升，同时提升生成质量。消融实验验证了混合求解器策略和维度级别分配的有效性，进一步证明了方法的稳健性和广泛适用性。
 
 ### 通俗易懂  
@@ -31,11 +31,11 @@ HyCa的核心思想是让模型的不同“特征”自己决定用什么“计�
 <u>http://arxiv.org/abs/2510.04504v1</u>  
 <u>https://github.com/hu-zijing/AsynDM</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/4.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/a656951f49bf4c38879d8963b0d0659a.png)  
 当前主流的文本到图像生成扩散模型普遍采用同步去噪策略，即所有像素在相同时间步长内同时从噪声状态转变为清晰图像。这种方式导致提示相关区域只能参考同一噪声水平的无关区域，缺乏清晰的上下文信息，进而影响生成图像与文本提示的对齐效果。本文提出了一种异步去噪扩散模型（Asynchronous Diffusion Models, AsynDM），其核心思想是为不同像素分配不同的时间步长，使得提示相关区域比无关区域更缓慢地去噪，从而获得更丰富的像素间上下文信息，提升文本与图像的语义对齐。通过动态提取提示相关区域的掩码，并基于该掩码调节各区域的去噪速度，AsynDM实现了对预训练扩散模型的无微调插拔式改进。实验结果表明，AsynDM在多个文本提示集上均显著提升了文本与图像的对齐度，且保持了较高的采样效率。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/5.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/ff6ccc6ce4224cda921560251272c309.png)  
 AsynDM方法主要包括以下几个关键步骤：  
 
 1. **像素级时间步分配**：传统扩散模型中所有像素共享统一的时间步，AsynDM将时间步扩展为与图像尺寸相同的矩阵，实现像素级的时间步调控。每个像素独立编码其时间步信息，融入去噪模型的计算中，保持马尔可夫性质不变。  
@@ -44,8 +44,8 @@ AsynDM方法主要包括以下几个关键步骤：
 4. **掩码引导的异步去噪**：结合动态掩码和时间步调度，实现提示相关区域的细粒度、渐进式去噪，增强其对清晰上下文的依赖，最终提升文本与图像的语义一致性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/6.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/7.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e8eefcdf60fe47d1969f73697353c956.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/59419a43ecea441cafc9699a94356289.png)  
 实验基于Stable Diffusion 2.1及更高级模型（SDXL、DiT）展开，涵盖四个常用文本提示集（Animal Activity、Drawbench、GenEval、MSCOCO），共计1280幅图像生成。评估指标包括BERTScore、CLIPScore、ImageReward和QwenScore，全面衡量文本与图像的语义对齐度。结果显示，AsynDM在所有指标上均优于基线方法及先进对齐技术（如Z-Sampling、SEG、S-CFG、CFG++），提升幅度显著且稳定。采样时间仅较传统模型略有增加，保持良好效率。人类评价进一步验证AsynDM生成图像与文本提示的一致性更高。消融实验表明，动态掩码和凹函数调度均为提升性能的关键因素，且方法对掩码不精确具有良好鲁棒性。此外，AsynDM还展现出减少图像畸变和提升编辑任务表现的潜力，拓展了其应用价值。
 
 ### 通俗易懂  
@@ -55,12 +55,12 @@ AsynDM方法主要包括以下几个关键步骤：
 
 <u>http://arxiv.org/abs/2510.04220v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/37.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/93b2f20f62f54d0c87be4297376d49f4.png)  
 本文针对自回归（AR）图像生成模型中存在的核心瓶颈——视觉token词汇表庞大且无结构，提出了Manifold-Aligned Semantic Clustering（MASC）框架。传统方法将token视为平坦无序的类别，忽视了token嵌入空间的内在几何结构，导致模型面临高维、多类别的复杂预测任务，训练效率低下且生成质量受限。MASC通过构建基于token嵌入流形的层次语义树，利用几何感知的距离度量和密度驱动的聚合策略，将高维平坦的预测任务转化为结构化的层次分类问题。该方法作为即插即用模块，显著提升训练速度（最高提升57%）和生成质量（如LlamaGen-XL的FID从2.87降至2.58），使自回归模型在生成质量和效率上达到与最先进方法的竞争力，强调了结构化预测空间在可扩展生成模型中的关键作用。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/38.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/39.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/02f16e402138488eb4c366ef0d46a480.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/88dcccee643e4eb7be78fe6478295464.png)  
 MASC框架核心包含两个创新点：  
 
 1. **几何感知的相似度度量**：传统k-means依赖欧氏距离和质心计算，容易偏离嵌入流形，导致语义不连贯的聚类。MASC通过无质心的实例间平均距离度量，基于token对间距离的均值，天然对嵌入流形几何和局部结构敏感，避免了“离流形”代表点的问题。  
@@ -68,8 +68,8 @@ MASC框架核心包含两个创新点：
 该层次语义树用于将原始大词汇表映射为较小的语义分支集合，训练时将token序列转换为分支序列，模型预测任务由原始的高维N分类简化为低维k分类。推理阶段可采用随机采样或两阶段解码策略实现细粒度token的还原。此方法显著降低了预测任务的复杂度，提升训练效率和生成质量。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/40.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/41.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/692ed0045cb741bb8cfd1940211820c1.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/19427a62bceb4d0caa97e769065f4678.png)  
 在ImageNet-1K数据集上，基于LlamaGen系列模型的广泛实验验证了MASC的有效性。与基线平坦词汇表和k-means聚类先验相比，MASC显著降低了预测不确定性（熵值下降），加速模型收敛，训练时间节省高达57%。生成质量方面，MASC提升FID、IS及召回率，尤其在大型模型（LlamaGen-XL）上表现突出，FID从2.87降至2.58。进一步分析显示，MASC更有效捕捉数据多样性，提升召回率。MASC作为插件模块，还成功提升了其他自回归框架（IAR、CTF）的性能，且在不同tokenizer（如GigaTok）上表现稳健。消融实验表明，几何感知距离和密度驱动构建两者协同作用是性能提升的关键。整体实验充分证明MASC通过结构化预测空间解决了高维分类瓶颈，推动了自回归图像生成模型的训练效率和生成质量。
 
 ### 通俗易懂  
@@ -81,12 +81,12 @@ MASC框架核心包含两个创新点：
 
 <u>http://arxiv.org/abs/2510.04450v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/120.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/6e46223ef1e0489888688025e7c8e9a5.png)  
 本文聚焦视觉自回归（AR）生成模型在图像生成任务中的性能瓶颈，指出其核心问题在于生成器与视觉tokenizer之间的不一致性。传统视觉AR模型通过将图像编码为离散token序列，利用自回归Transformer逐步预测下一个token，但生成的token序列往往难以被tokenizer准确解码回图像，导致生成质量下降。该不一致性源自两方面：一是“暴露偏差”，训练时模型总是基于真实上下文预测，而推理时依赖自身生成的上下文，导致生成序列偏离训练分布；二是模型对token的embedding空间缺乏感知，只优化token索引预测，忽视了token在视觉空间的相似性。基于此，作者提出reAR，一种通过生成器-Tokenizer一致性正则化的训练策略，旨在提升生成token与tokenizer解码的一致性，从而显著改善视觉AR模型的生成表现。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/121.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/122.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/aac049c7c76246bfbcd393c4765ce8d3.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/d94c404c035c4f00a4a7f6a7b7e928d5.png)  
 reAR方法核心在于引入两种正则化策略，增强生成器对tokenizer的兼容性：  
 
 1. **噪声上下文正则化（Noisy Context Regularization）**：在训练过程中，随机向输入token序列注入噪声，模拟推理时模型面临的非理想上下文，减少对干净上下文的依赖，提高模型对错误累积的鲁棒性，缓解暴露偏差问题。噪声比例随训练进度逐渐调整，实现动态噪声注入。  
@@ -94,7 +94,7 @@ reAR方法核心在于引入两种正则化策略，增强生成器对tokenizer�
 这两者结合形成了生成器-Tokenizer一致性正则化目标，简单易用，无需修改tokenizer结构或生成顺序，且兼容多种tokenizer设计。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/123.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/099403ba397f493f8397de76c72ab11d.png)  
 作者在ImageNet-1K 256×256图像生成任务上，采用标准的Patch-VQGAN tokenizer和多种先进tokenizer（如TiTok、AliTok）验证reAR方法。结果显示，reAR显著提升了视觉AR模型的生成质量：以标准raster顺序tokenizer为例，FID从3.02降低至1.86，IS提升至316.9，参数规模远小于主流扩散模型且性能接近甚至超越。reAR在不同tokenizer上均展现出良好的泛化能力，且训练效率高于对比模型。消融实验表明，噪声上下文和码本嵌入正则化各自均有贡献，联合使用效果最佳。层次选择和正则权重等超参数也被细致调优，确保训练稳定。最后，reAR支持大规模模型训练，随着模型和训练规模增大，性能持续提升，且保持了自回归模型高效的采样速度优势。
 
 ### 通俗易懂  
@@ -105,11 +105,11 @@ reAR的核心想法是让生成图像的“写作者”（生成器）和“读�
 <u>http://arxiv.org/abs/2510.04961v1</u>  
 <u>https://github.com/facebookresearch/SSDD</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/42.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/26b84008fd1a421683a5be1005452e41.png)  
 本文提出了SSDD（Single-Step Diffusion Decoder），一种高效的图像tokenization方法，旨在提升生成模型的图像重建质量和采样速度。传统的图像tokenizers多基于KL正则化的变分自编码器（KL-VAE），结合重建、感知和对抗损失进行训练。尽管扩散解码器（diffusion decoders）作为条件图像分布建模的替代方案表现出潜力，但其采样过程迭代且依赖对抗训练，导致速度慢且训练不稳定。SSDD通过引入结合卷积与Transformer的混合架构，采用无GAN的流匹配训练策略，并利用蒸馏技术实现单步采样，首次实现了无需对抗训练的扩散解码器单步重建。实验显示，SSDD在保持或提升图像生成质量的同时，显著加快了采样速度，超越了现有KL-VAE及扩散自编码器，成为高质量、高效率生成模型的理想替代方案。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/43.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/9016c27489f546daa5972b16652bf954.png)  
 SSDD方法包含四个核心创新：  
 
 1. **混合U-Net-Transformer架构**：基于U-ViT设计，结合卷积ResNet模块和Transformer中间层，既保留卷积的局部特征建模能力，又发挥Transformer的全局建模优势。引入自适应归一化（AdaGN/AdaLN）和相对位置编码，增强条件输入和时序信息的融合。  
@@ -118,8 +118,8 @@ SSDD方法包含四个核心创新：
 4. **共享编码器设计**：训练单一多尺度编码器，可与不同规模的解码器共享，降低训练成本，兼容现有编码器如KL-VAE和DiTo，方便集成和扩展。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/44.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/45.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/fb94d68c7b2d47ad8f785eac845d9c9b.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/00ade29b943542809c58dca25111e320.png)  
 在ImageNet-1k数据集上，SSDD模型进行了多尺度、多参数量配置的系统评估。结果显示，SSDD在重建质量指标（rFID、LPIPS、DreamSim）上优于KL-VAE及多种扩散自编码器，且采样速度提升1.4至3.8倍。尤其在高压缩率情况下，SSDD保持了较好的感知质量，低级别失真指标虽略逊于传统方法，但更符合人类视觉感知。通过对比不同空间下采样率，SSDD表现出更强的泛化能力和稳定性。在图像生成任务中，结合DiT扩散变换器，SSDD解码器显著提升生成质量和速度。消融实验验证了架构改进、REPA正则化、流匹配采样策略及蒸馏对性能的贡献，且无GAN训练即可达到最佳效果。整体实验充分证明了SSDD作为高效、稳定且高质量的扩散解码器的优势。
 
 ### 通俗易懂  
@@ -129,11 +129,11 @@ SSDD的核心是让计算机在“还原”图像时既快又好。传统方法�
 
 <u>http://arxiv.org/abs/2510.03813v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/46.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/9caebb9baa3847a2b1c3a20b446f159c.png)  
 本文针对文本到图像（T2I）扩散模型中普遍存在的多样性不足问题提出了一种创新方法——对比噪声优化（Contrastive Noise Optimization, CNO）。当前主流的T2I扩散模型虽然能生成高质量且与文本高度相关的图像，但在强文本指导下容易陷入模式塌缩，导致生成图像缺乏多样性。现有方法多在推理过程中调整中间潜变量或文本条件，但效果有限且对超参数敏感。本文从根本上出发，通过优化扩散过程起始的初始噪声分布，利用在Tweedie数据空间定义的对比损失，推动同一批次中的噪声样本相互排斥以增强多样性，同时通过锚定机制保持生成图像的语义一致性和质量。理论分析表明，该方法在提升多样性的同时有效维护了图像质量和文本对齐度。大量实验在多种T2I模型骨干上验证了该方法在多样性与质量权衡上的优势，且具备良好的超参数鲁棒性和广泛适用性。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/47.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/0b7cd4863f3645fdb7c9df2b20360914.png)  
 本文方法核心在于对扩散模型生成过程的初始噪声进行预处理优化，具体步骤包括：  
 
 1. **初始噪声采样**：从标准正态分布采样一批初始噪声向量，作为生成图像的起点。  
@@ -145,8 +145,8 @@ SSDD的核心是让计算机在“还原”图像时既快又好。传统方法�
 该方法无需修改预训练扩散模型结构，也不依赖复杂的推理时调节，计算成本低且易于实现。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/48.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/49.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b03e3d655f5a4a78a664f66c525ce4b9.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/f6fa10a5aadc49a99f1e32fbb430ef56.png)  
 本文在多种主流文本到图像扩散模型（Stable Diffusion 1.5、XL、3）上进行了大规模零样本多样性生成实验，使用MS-COCO验证集文本提示生成数万张图像。通过多项指标评估，包括多样性指标（VendiScore、Mean Pairwise Similarity）、图像质量指标（Image-Reward、Pick-Score）和文本对齐指标（CLIP Score），结果显示该方法在提升生成多样性方面显著优于现有代表性方法（CADS、Particle Guidance、DiversityPrompt）。尤其在复杂组合文本提示下，方法生成的图像不仅种类丰富，还保持了较高的视觉质量和语义一致性。消融实验验证了降采样窗口大小对性能的影响，适度降采样既保证了效率也保持了优化效果。理论分析与实证结果一致，表明γ参数在稳定优化过程中起到关键作用。整体来看，该方法实现了多样性与质量的良好平衡，且对超参数不敏感，具备广泛应用潜力。
 
 ### 通俗易懂  

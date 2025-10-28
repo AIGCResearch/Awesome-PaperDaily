@@ -7,14 +7,14 @@
 <u>http://arxiv.org/abs/2510.03853v1</u>  
 <u>https://github.com/rui-qian/UGround</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/191.jpg)
+![](https://img.blenet.top/file/paper-daily/aigc_research/f9e74f9702074efeafe5ea80fd938684.png)
 本文提出了UGround，一种统一的视觉定位框架，旨在解决当前视觉语言模型（LMMs）视觉定位任务中的两大瓶颈：一是传统方法固定使用最后一层隐藏状态作为文本提示，导致层层误差累积且缺乏中间校正；二是使用\<SEG\>标记隐式地将文本嵌入视觉空间，缺少明确的空间信息。UGround通过动态选择变换器中间层的相似性图作为“掩码提示”，为视觉模型（如SAM）提供显式空间线索，实现从传统表达式分割到推理分割、单目标到多目标、正向查询到空目标的任务统一。该方法基于策略引导掩码机制（Policy-Prompted Masking），包括随机跳层连接（SSC）和掩码提示（MasP），有效提升了视觉定位的准确性和泛化能力，首次从属性视角实现了视觉定位任务的统一。
 
 
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/192.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/193.jpg)
+![](https://img.blenet.top/file/paper-daily/aigc_research/ef8335855aea45c2b7b4769497c6de3d.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/c17079e66ec945a4a884576cae56ca82.png)
 UGround的核心是Policy-Prompted Masking（PPM），主要包括两个部分：
 
 1. **随机跳层连接（SSC）**：将选择中间层作为文本\<SEG\>标记的表示视为强化学习任务，策略根据当前状态（各层\<SEG\>隐藏状态）分布采样连接层，实现动态跳过部分层，形成类似跳跃连接的结构。该策略利用REINFORCE算法优化，奖励基于所选层的相似性图与真实掩码的匹配度，增强模型对不同层信息的利用。
@@ -24,8 +24,8 @@ UGround的核心是Policy-Prompted Masking（PPM），主要包括两个部分�
 
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/194.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/195.jpg)
+![](https://img.blenet.top/file/paper-daily/aigc_research/b04c412bb1c541e0acd623a7ed71a3a5.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/646263b9cacd49748f629755b7456ab1.png)
 实验部分在多个视觉定位任务数据集上验证了UGround的有效性，包括ReasonSeg推理分割数据集、传统RefCOCO系列数据集及其多目标扩展gRefCOCO。结果显示，UGround在IoU和准确率指标上均显著优于当前最先进方法，最高提升达9.0%和12.1%。具体分析表明，动态选择中间层的策略显著提升了相似性图的判别力，加快了模型训练收敛速度。此外，利用相似性图作为软掩码提示，不仅增强了空间信息表达，还提高了模型对复杂查询（如多目标及空目标）的处理能力。消融实验进一步确认了随机跳层连接和掩码提示两部分对性能提升的贡献，展示了UGround在统一视觉定位任务中的广泛适用性和优越表现。
 
 
@@ -41,7 +41,7 @@ UGround的核心想法是让模型不再只盯着“最后一层”的信息，�
 本文聚焦于多模态语言模型（MLMs）内部视觉表征的理解，特别是其视觉键值（key-value）缓存中的信息流动与表现。尽管现有研究多关注视觉编码器或变换器激活输出，MLMs在感知密集任务（如分割、语义对应、时序对应和指代表达检测）上的表现依然有限。作者通过分析三款主流MLMs（LLaVA-OneVision、Qwen2.5-VL和Llama-3-LLaVA-NeXT）中的视觉键值令牌，发现这些令牌本身已编码足够的视觉信息以支持多种零样本感知任务，且其性能与整体模型感知能力相关。然而，语言模型对输入视觉信息的增强有限，且在某些任务上不及未经多模态微调的视觉编码器（如SigLIP）。此外，后期层中的输入无关视觉键存在干扰信息，反而削弱了模型感知性能。研究还提出通过文本前缀引导视觉信息，改善视觉表征的感知能力，并指出若语言模型能更好地控制其视觉信息，整体感知性能将显著提升。该工作为MLMs的机制解释和视觉编码训练提供了新的视角和方向。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/163.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/336a1399ece3474e92703c1d92c3198d.png)  
 本文的方法主要围绕对MLMs内部视觉键值令牌的深入解析和操控展开，具体包括：  
 
 1. **视觉信息流分析**：通过六个感知任务（前景分割、共分割、语义分割、指代表达分割、语义对应、时序对应）对各层视觉值令牌进行零样本性能评估，揭示视觉信息在语言模型层间的演变规律。  
@@ -51,8 +51,8 @@ UGround的核心想法是让模型不再只盯着“最后一层”的信息，�
 5. **视觉信息利用率评估**：通过比较视觉值令牌对任务的正确预测与模型最终输出的正确率，揭示语言模型对视觉信息的利用不足，指出潜在的改进空间。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/164.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/165.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b30262995b084bdba46581dcd4bbde64.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/6e3b3885d1b3463d824ef71001a1c235.png)  
 实验部分涵盖了多层次的视觉表征评估和干预验证。首先，通过在六个感知任务上对视觉值令牌的零样本测试，发现语言模型中的视觉信息在前期层逐渐丰富，后期层显著下降，且整体性能优于输入视觉编码器输出但不及未经多模态微调的SigLIP。接着，利用MSCOCO数据集识别输入无关的视觉键，发现其在语言模型早期和后期层反复出现。通过阻断后期层输入无关视觉键的注意力查询，模型在POPE和MME两个基准上的感知表现显著提升，证明这些键含有干扰信息。此外，文本前缀实验显示，添加与任务相关的文本提示能有效提升视觉值令牌在指代表达分割、语义对应及领域适应任务上的表现，而随机或错误前缀则无益甚至有害。最后，通过对比视觉值令牌与模型输出的正确率，发现语言模型大量未能充分利用已编码的视觉信息，尤其在艺术风格识别任务中，潜在提升达33.3%。
 
 ### 通俗易懂  
@@ -65,11 +65,11 @@ UGround的核心想法是让模型不再只盯着“最后一层”的信息，�
 <u>http://arxiv.org/abs/2510.04142v1</u>  
 <u>https://anonymous.4open.science/r/Autonomous-Distillation/</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/166.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/f1acabfea6124ee58283caae53f52426.png)  
 本研究聚焦于多模态大语言模型（MLLMs）知识蒸馏中的核心难题——多教师模型推理路径的概念漂移问题。多教师模型在推理过程中表现出动态且不可预测的分布变化，导致学生模型继承偏差，影响其性能和稳定性。针对这一挑战，论文首次将概念漂移理论引入多教师知识蒸馏，视推理过程为多流次令牌预测，揭示了多教师模型间的异步漂移及其对学生模型的影响。基于此，提出“学习-比较-批判”范式，通过自主偏好优化（APO）引导学生模型在多教师监督下自我蒸馏，筛选一致且优质的推理路径，同时批判性反思教师模型的漂移偏差，实现概念对齐。该方法显著提升了学生模型的鲁棒性、一致性和泛化能力，并贡献了大规模医学影像推理数据集CXR-MAX，推动多教师知识蒸馏研究。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/167.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/891674cbb3f446c6a5f0310302a6f388.png)  
 方法部分基于多流概念漂移理论，系统处理多教师MLLMs推理路径的异步漂移，具体包括：  
 
 1. **多流概念漂移建模**：将每个教师模型的推理过程视为独立的自回归序列，定义多流漂移以捕捉教师间动态分布差异，量化推理状态的概率分布演变。  
@@ -79,8 +79,8 @@ UGround的核心想法是让模型不再只盯着“最后一层”的信息，�
 5. **CXR-MAX数据集构建**：为支持研究，构建涵盖7个公开MLLM教师推理轨迹的170,982实例医学影像数据集，促进领域特定多教师知识蒸馏的实证研究。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/168.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/169.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/19930c226eb9439fa2a5a922415c7584.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/73cd4d013d734d51baf1edd738db591c.png)  
 实验在医学胸片诊断领域展开，利用MIMIC-CXR数据集的1/10数据量进行训练，验证模型在鲁棒性、一致性和泛化能力上的表现。结果显示：  
 
 1. **多教师蒸馏性能优越**：学生模型在多标签疾病分类任务中平均准确率达到0.78，超越所有单一教师模型及多种基线方法，尤其在教师间漂移较大的疾病类别表现显著提升。  
@@ -102,11 +102,11 @@ UGround的核心想法是让模型不再只盯着“最后一层”的信息，�
 <u>http://arxiv.org/abs/2510.04039v1</u>  
 <u>https://github.com/bin123apple/GUI_Spotlight</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/170.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/6f38707c309641ff8753113cc3a4cf90.png)  
 本文针对多模态大语言模型在图形用户界面（GUI）视觉定位中的不足，提出了一种名为GUI-SPOTLIGHT的视觉聚焦模型。当前GUI代理在复杂、高分辨率界面上缺乏精细的视觉定位能力，难以实现精准的点击、拖拽等像素级操作。GUI-SPOTLIGHT通过动态调用多种专用视觉工具，采用迭代式聚焦策略，逐步缩小关注区域，显著提升了视觉定位的准确率。该方法在高分辨率的ScreenSpot-Pro基准测试中，以仅18.5K训练样本实现52.8%的准确率，超过了训练样本数百万级的现有7B模型，展现出优异的数据效率和泛化能力。研究同时对多工具协调的强化学习训练过程进行了改进，提升了训练稳定性和样本利用率。本文贡献在于提出了结合多工具迭代聚焦的视觉定位框架，设计了改进的多工具强化学习算法，并系统总结了训练过程中的经验和负面结果，为构建高效、稳健的GUI视觉定位模型提供了实用指导。  
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/171.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/98b8ff30b822422e9c9fbd6bc2432b75.png)  
 GUI-SPOTLIGHT方法核心是“思考图像”，通过多轮迭代调用三种视觉工具（extract、find color、crop）来逐步缩小目标区域，提升定位精度。  
 
 1. **推理流程**：模型接收文本描述和原始截图，维护一个图像注册表和对话历史。每轮模型输出工具调用或终止指令。工具执行后返回裁剪图像及偏移量，更新对话历史，直到模型输出最终坐标。  
@@ -118,8 +118,8 @@ GUI-SPOTLIGHT方法核心是“思考图像”，通过多轮迭代调用三种�
 4. **奖励设计**：结合五种奖励，包括最终答案准确性、裁剪区域与目标的重叠度、颜色匹配成功率及工具调用格式正确性，综合引导模型稳定高效训练。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/172.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/173.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/d7b21918aee54bd2bbc7129a33ae24fc.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/61609c9002084f23ab2c9f486dd194fc.png)  
 实验在多个公开基准上验证了GUI-SPOTLIGHT的有效性。  
 - **ScreenSpot-Pro**：在高分辨率专业软件界面视觉定位任务中，模型以仅18.5K训练样本达到52.8%准确率，超越了训练样本多达百万级的7B模型，展现出卓越的数据效率和跨领域泛化能力。  
 - **UI-Vision**：针对多应用程序桌面界面，GUI-SPOTLIGHT相较原始UI-TARS-1.5-7B基线提升5.3个百分点，优于多种7B级开源模型，证明了模型在多样化复杂环境中的适用性。  
@@ -135,11 +135,11 @@ GUI-SPOTLIGHT的核心思想是像用手电筒一样“照亮”屏幕上的目�
 
 <u>http://arxiv.org/abs/2510.04514v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/174.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/46ad4e396552468bbd67ea632470da32.png)  
 ChartAgent针对复杂图表问答（ChartVQA）中的视觉推理难题提出了一种创新的多模态智能体框架。传统多模态大语言模型（MLLM）在处理未标注图表时性能急剧下降，主要因缺乏对图表空间信息的精确视觉理解。ChartAgent借鉴人类解读图表的认知策略，将自然语言查询拆分为多个视觉子任务，主动操作图表图像，执行如绘制标注、裁剪区域、定位轴线等专门动作，利用专门设计的图表视觉工具库辅助推理。该方法通过多轮交互迭代，模拟人类逐步理解图表的过程，实现视觉信息的精准捕捉和数值估算，显著提升了对未标注图表和数值密集查询的处理能力。实验结果表明，ChartAgent在ChartBench和ChartX两个权威基准上，较现有方法提升了16.07%整体准确率和17.31%未标注图表的数值问答准确率，且表现稳定，适用多种图表类型和复杂视觉推理场景，展现出良好的泛化能力和模块化扩展潜力。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/175.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2bf34f1777de44d9918192bc19830d7d.png)  
 ChartAgent构建于一个多轮交互的agentic框架，核心包含三个关键阶段：  
 
 1. **思考（Thought）**：基于当前多模态状态（包括图表图像、用户问题及先前推理结果），MLLM生成下一个视觉子任务目标，如图例检测、饼图分割或轴线定位，部分任务涉及数值计算。  
@@ -148,8 +148,8 @@ ChartAgent构建于一个多轮交互的agentic框架，核心包含三个关键
 此外，系统通过图表元数据提取和少样本示例检索实现针对不同图表类型的定制化推理流程，支持对带注释和未注释图表的智能路由。该方法结合视觉推理与语言理解，形成闭环反馈机制，提升视觉信息的准确捕获和推理的可靠性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/176.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/177.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/716d40a343394c56aa3339df79c930be.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/b31b75e6f4814bb8881a41238804b05c.png)  
 实验在ChartBench和ChartX两个大型公开数据集上进行，涵盖40多种图表类型及丰富的数值与关系问答任务。数据集中高比例未标注图表和数值密集型问题，极大考验模型的视觉推理能力。ChartAgent与42个包括专有和开源的多模态大语言模型及图表专用模型对比，采用准确率和数值误差为主要评测指标。结果显示，ChartAgent在整体准确率上领先所有竞争模型，未标注图表问答准确率提升显著，尤其在复杂视觉推理和数值估算任务中表现卓越。进一步分析揭示，视觉自检机制成功提升了70%的推理恢复率，显著降低了错误传播。多轮迭代增强了模型对图表细节的理解，适应不同图表结构和问答复杂度。实验还验证了ChartAgent对底层MLLM的良好兼容性，支持模块化升级，展现出优异的泛化和扩展性。
 
 ### 通俗易懂  
@@ -162,11 +162,11 @@ ChartAgent就像一个聪明的图表助手，当你问它关于图表的问题�
 <u>http://arxiv.org/abs/2510.05034v3</u>  
 <u>https://github.com/yunlong10/Awesome-Video-LMM-Post-Training</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/69.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2dfec9d6e5ab48519e7f58edd988414e.png)  
 视频理解作为计算机视觉中的前沿难题，要求模型具备处理复杂时空关系、长时依赖和多模态信息推理的能力。近年来，视频大型多模态模型（Video-LMMs）通过结合视觉编码器与强大的解码语言模型，实现了视频理解任务的显著进步。然而，将这些模型从基础感知系统转变为复杂推理引擎的关键阶段——后训练（post-training）在文献中尚无系统总结。本文综述了Video-LMM后训练的三大核心支柱：一是通过链式思考（Chain-of-Thought, CoT）进行的监督微调（SFT），二是基于可验证目标的强化学习（RL），三是利用增强推理计算的测试时扩展（TTS）。文章系统梳理了这些技术的功能定位、相互关系及其针对视频特有挑战（如时序定位、时空标注、长视频效率、多模态证据整合）的适配策略，归纳了设计原则、评估协议，并指出了奖励设计、可扩展性及成本性能优化等关键难题，同时整理了评测基准和数据集，为研究者提供统一框架以推动Video-LMM推理能力的提升。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/70.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/0b86b842df6744db86c22fa4f07078f7.png)  
 Video-LMM后训练方法主要包括以下三部分：  
 
 1. **监督微调（SFT）**：通过大规模标注数据，特别是链式思考格式的推理示例，增强模型的多模态对齐和指令执行能力。SFT不仅实现视觉与语言的有效融合，还为后续强化学习提供稳定的初始策略。其流程涵盖模态整合（将视觉特征映射至语言模型嵌入空间）、领域适应（从图像到视频，或特定领域视频的微调）、以及视频指令调优，逐步提升模型对视频内容的理解和响应能力。  
@@ -189,9 +189,9 @@ Video-LMM后训练方法主要包括以下三部分：
 本文针对视频问答（VideoQA）中关键的帧选择问题提出了A.I.R.方法。视频内容丰富且帧数庞大，直接处理所有帧计算量极大，不现实。现有方法多依赖轻量级模型（如CLIP）计算查询与帧的相似度，但这类模型难以捕捉复杂查询中的时序和语义细节，导致选择的帧与查询相关性不足。另一类方法利用大型视觉语言模型（VLM）深度分析帧与查询的关系，准确率高但计算成本极高。A.I.R.通过结合轻量模型的快速初筛和大型VLM的深度推理，采用自适应、迭代的框架，显著提升了帧选择的准确性和效率，兼顾复杂查询的理解与计算资源的合理利用，推动了视频问答技术的实用化进程。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/178.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/179.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/180.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e3271847fea944779cffb85f4bec9294.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/973e7dfe961941d7b5893b4c42c666a1.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/9b11a7f11e4a416fb4eca8b25918f8b7.png)  
 A.I.R.方法分为三大阶段：  
 
 1. **自适应初始采样**：基于轻量级模型CLIP计算视频中每帧与查询的相似度，采用高斯混合模型自适应阈值识别高相关的时间区间（事件），并根据事件长度动态分配采样帧数，保证覆盖关键时刻且避免冗余。  
@@ -203,8 +203,8 @@ A.I.R.方法分为三大阶段：
 3. **问答推理阶段**：最终选定的帧输入回答VLM进行问题回答。此方法自适应视频长度和复杂度，兼顾准确率与计算效率。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/181.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/182.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2345cd369ce54689a183517cf06df9b1.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/46b84b95f59b4689916fed5624b5da03.png)  
 A.I.R.在多种长视频和短视频问答基准上进行了广泛评测，涵盖Video-MME、MLVU、LongVideoBench、EgoSchema和NextQA等数据集。实验结果表明，A.I.R.作为无训练、模型无关的插件模块，能显著提升多种基础VLM的性能，如QwenVL、InternVL-3、LLaVA-OneVision和VILA-1.5。与传统均匀采样和现有帧选择方法相比，A.I.R.在准确率上普遍领先，且所需分析帧数更少，计算效率明显提高。消融研究验证了各组件（自适应阈值、区间排序、推理分析、局部采样）的有效性。与其他基于VLM的帧选择方法相比，A.I.R.通过迭代机制有效降低了推理成本，实现了准确性和效率的最佳平衡。
 
 ### 通俗易懂  
@@ -214,11 +214,11 @@ A.I.R.就像是一个聪明的“视频导游”，帮你从一部很长的视�
 
 <u>http://arxiv.org/abs/2510.04022v3</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/183.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/927a47e7d3704e6b8daf0f28de861d6a.png)  
 本文提出了一种面向长视频问答（Long-Video QA）的新框架——Video-in-the-Loop（ViTL），旨在高效利用有限的计算资源，通过两阶段的“先粗后细”策略实现问题相关时段的精准定位与高质量答案生成。ViTL首先以低帧率对整段视频进行快速浏览，定位出与问题密切相关的时间片段；随后以更高帧率和分辨率对这些关键片段进行细致分析，生成最终答案。为解决长视频QA中缺乏明确时段标注的问题，作者设计了VGrounding-QA数据集，将事件知识图谱转换为带有时段监督的多项选择问答，确保训练过程中模型能够学习“在哪里看”与“如何答”相结合的能力。训练过程中，ViTL采用一种创新的联合优化策略，将定位的时段质量（IoU）与答案正确率紧密耦合，实现从答案反馈到时段定位的直接信用传递，显著提升了长视频QA和时段定位的性能。该方法在多个公开长视频QA及时段定位基准上均取得了领先成绩，展示了其在复杂长视频理解任务中的优势和可扩展性。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/184.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/534ccfc71a024341be54e24f10ade74e.png)  
 ViTL框架包括以下关键组成部分：  
 
 1. **两阶段视频处理**：  
@@ -232,8 +232,8 @@ ViTL框架包括以下关键组成部分：
 4. **事件知识图谱辅助构建训练集**：通过语义分块和事件关系构建事件知识图谱，自动生成与视频时段对应的多项选择QA训练样本，保障训练中时段与答案的高度关联。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/185.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/186.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/d3106a8e3091464da702b939fa13eb9b.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/4ea92536e4c140fd8391d9b094b9c9af.png)  
 作者在多个长视频问答和时段定位基准上验证了ViTL的有效性，包括LongVideoBench、LVBench、MLVU（长视频QA）以及Charades-STA和ActivityNet-Captions（时段定位）。实验结果显示：  
 - ViTL在保持固定的计算预算和帧数输入下，相较于统一采样和单阶段方法，准确率提升显著（长视频QA提升最高达8.6%），同时帧数消耗减少约50%。  
 - 在时段定位任务中，ViTL在Recall和mIoU指标上均超越了当前最先进的多模态大模型，显示出更强的时序定位能力。  
@@ -255,8 +255,8 @@ ViTL的核心思想可以比喻成“先浏览，再聚焦”。当你面对一�
 本文针对视觉-语言模型（VLM）在物理世界中执行任务时的局限，提出了一种创新框架，通过引入“通用动作专家”实现高层规划与低层动作执行的有效解耦。传统的视觉-语言-动作（VLA）模型因训练数据稀缺且领域狭窄，导致泛化能力差，且将推理与动作整合在单一架构中，难以适应新环境。现有双系统方法虽尝试分离“思考”与“行动”，但动作模块面临语义歧义，限制了跨任务大规模训练。本文创新性地使用稀疏3D轨迹作为VLM与动作专家之间的中介表示，降低动作模块的语义负担，实现了动作专家对多任务和新环境的零样本泛化，显著提升了整体系统的适应性和执行效率。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/187.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/188.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/77f110ae4d314359a38364d3b49e50ef.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/12458541826448fbb34ff475c5ec8d56.png)  
 本文方法基于三大核心设计：  
 
 1. **稀疏3D轨迹接口**：VLM负责生成稀疏的3D关键路径点（waypoints）和最终执行器姿态，轨迹在相机坐标系下生成，避免了复杂的坐标变换，充分利用VLM的视觉先验和空间推理能力。  
@@ -264,8 +264,8 @@ ViTL的核心思想可以比喻成“先浏览，再聚焦”。当你面对一�
 3. **“动作预训练+点云微调”策略**：首先在大规模纯轨迹数据上进行预训练，掌握基础运动技能；随后利用点云数据进行微调，学习环境感知下的轨迹优化。这种分阶段训练显著提升了训练效率和泛化能力，支持动作专家在多样化环境中零样本部署。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/189.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/190.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b40269f0994240f78dbe2a42d473213f.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/36d1344f879a403db4b7520eb2af3fe9.png)  
 在模拟环境（RoboTwin、ManiSkill）和真实机器人平台上，本文方法展示了卓越的性能和泛化能力。与多种主流模型和专家模型对比，本文系统在短、中、长任务时域均表现优异，尤其在长时域任务中成功率达60%，远超其他模型。泛化测试涵盖不同摄像机视角、未见颜色和新语义指令，均展现出强大的零样本适应能力。真实机器人实验中，动作专家保持冻结，仅对VLM进行少量监督微调，实现了多任务高效执行，优于传统基于逆运动学的执行方法。消融研究进一步验证了训练步骤、噪声水平、训练策略及点云数据源对模型性能的关键影响，强调了分阶段训练和高质量点云注释的重要性。
 
 ### 通俗易懂  

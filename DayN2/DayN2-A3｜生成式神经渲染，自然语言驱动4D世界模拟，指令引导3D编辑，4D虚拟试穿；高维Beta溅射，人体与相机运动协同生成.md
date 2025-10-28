@@ -6,12 +6,12 @@
 <u>http://arxiv.org/abs/2510.04236v1</u>  
 <u>https://shikun.io/projects/kaleido</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/71.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/72.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/929c64f120d04d3da5408c011d62469c.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/7835227026524b188f7bec5996c404c6.png)  
 本文提出了Kaleido，一种创新的生成式神经渲染模型，旨在实现统一的物体和场景级别的光照真实感视图合成。Kaleido的核心理念是将三维渲染问题转化为序列到序列的图像合成任务，突破了以往对显式三维表示的依赖。该模型支持任意数量的参考视角和目标视角，利用掩码自回归框架实现6自由度（6-DoF）相机姿态条件下的多视图生成。同时，Kaleido统一了三维和视频建模，基于纯解码器的校正流变换器架构，能够从大规模视频数据中预训练，显著提升了空间一致性并减少了对稀缺三维标注数据的依赖。实验证明，Kaleido在多个视图合成基准上刷新了性能记录，尤其在少视角条件下实现了零样本超越现有生成方法的表现，并在多视角设置中首次匹配了基于场景优化方法的渲染质量。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/73.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/57eaf87b0a0247afa9a31322300571ba.png)  
 Kaleido的设计核心是将神经渲染任务视为条件图像序列生成问题，具体包括以下关键技术：  
 
 1. **统一的空间-时间位置编码**：通过扩展旋转位置编码（RoPE）与几何变换注意力（GTA）机制，Kaleido实现了对二维像素、三维相机姿态及时间帧的统一编码，支持同时处理视频和多视角三维数据。  
@@ -22,8 +22,8 @@ Kaleido的设计核心是将神经渲染任务视为条件图像序列生成问�
 整体方法实现了对任意数量参考视图和目标视图的高质量生成，兼顾了生成的灵活性与空间一致性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/74.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/75.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/fce577f0788046f095d4662b9340fabc.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/102d8a210cfc4a889c126710b47570b2.png)  
 实验部分覆盖了模型架构设计、训练策略及预训练效果的系统性消融研究。通过在Objaverse（合成对象数据集）和uCO3D（真实世界对象数据集）上的100K步训练，验证了各设计要素对性能的贡献。结果显示，采用Llama-3变换器架构、统一的空间-时间编码和指数视角采样策略，均显著提升了峰值信噪比（PSNR）和生成质量。引入DINOv2辅助特征、改进的时间窗口注意力和噪声采样策略，进一步增强了模型的稳定性和多视图一致性。视频预训练阶段带来了约10%以上的性能提升，尤其在多视角条件下体现明显优势。最终，Kaleido在多个公开视图合成和三维重建基准上取得了领先成绩，首次实现了零样本生成模型与基于场景优化方法（如Instant-NGP）相当的渲染质量，验证了其在真实世界应用中的潜力和泛化能力。
 
 ### 通俗易懂  
@@ -34,11 +34,11 @@ Kaleido的核心想法是把三维场景的渲染问题变成“看图说话”�
 <u>http://arxiv.org/abs/2510.04390v1</u>  
 <u>https://github.com/eric-ai-lab/Morph4D</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/143.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/8464d163c7c144d3b6dda4870837b23e.png)  
 本文提出了MorphoSim，一种基于自然语言驱动的4D世界模拟器，能够生成具有多视角一致性和可编辑性的时空动态场景。该系统突破了传统文本到视频模型仅限于二维单视角和非交互性的限制，实现了对摄像机视角、物体运动轨迹及外观的精细控制与实时编辑。MorphoSim通过解析语言指令生成动态的4D场景，使机器人训练、任务设计和闭环评估更加灵活高效。系统支持物体级别的运动方向调整、颜色重绘、物体提取或删除，同时保证编辑操作无需完全重新生成场景，极大提升了交互效率和场景一致性。该框架融合了大语言模型、轨迹引导生成和特征场蒸馏技术，适用于机器人感知与规划等多种应用场景。实验结果表明，MorphoSim在生成质量、可控性及编辑能力方面均优于现有代表性方法，能够生成与真实视频质量相当的4D动态场景。  
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/144.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/8b0f5cbf1809472b890f1c5d822b251c.png)  
 MorphoSim由三大模块构成：  
 
 1. **命令参数化模块**：利用大语言模型（LLM）解析自然语言输入，提取动作和编辑指令，转化为结构化执行计划，决定调用生成或编辑模块，并生成具体参数。  
@@ -46,7 +46,7 @@ MorphoSim由三大模块构成：
 3. **场景编辑模块**：包括动态控制子模块和静态编辑子模块。动态控制子模块调整物体运动方向和轨迹，静态编辑子模块支持颜色修改、物体提取与删除。编辑直接作用于4D特征场，无需全场景重生成，保证时间和视角上的连贯性。编辑过程由LLM辅助，自动筛选目标物体并优化编辑参数，实现精准且统一的多帧编辑。  
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/145.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/4b0358da7f1c41ffb51c4def860001eb.png)  
 实验评估基于DAVIS真实视频数据集，通过构造文本提示生成对应4D场景，并与真实视频重建结果进行对比。采用BRISQUE和NIQE等无参考图像质量指标，及CLIP相似度和QAlign图像质量评估指标，全面衡量生成场景的视觉质量和语义一致性。结果显示，MorphoSim生成的4D场景在多个指标上与真实视频相当，且在不同生成骨干网络下均表现稳定。定性分析展示了系统在物体运动方向控制、颜色编辑、物体提取和删除等多种编辑任务中的高效与准确，体现了其良好的交互性和灵活性。整体实验验证了MorphoSim在机器人视觉模拟和任务生成中的实用价值，特别是在长轨迹规划和多视角动态场景编辑方面的优势。  
 
 ### 通俗易懂  
@@ -58,11 +58,11 @@ MorphoSim就像一个会听懂你说话的4D动画师。你告诉它“让红色
 
 <u>http://arxiv.org/abs/2510.04539v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/81.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/eea16808877446abbbf98d9bd56e6ad5.png)  
 本文提出了C³Editor，一种面向3D编辑的可控且视角一致的2D模型提升框架。当前基于2D提升的3D编辑方法普遍面临视角不一致的问题，导致多视角编辑结果冲突，影响3D编辑质量。C³Editor通过结合原始3D表示和文本编辑提示，构建视角一致的2D编辑模型，实现更优质的3D编辑效果。核心创新在于选定一个“Ground Truth”（GT）视角及其对应的编辑图像作为优化目标，用户还可手动调整该GT图像，从而控制编辑方向。该方法通过分阶段的优化策略，分别处理GT视角拟合和多视角一致性，采用独立的LoRA模块进行微调，显著提升编辑的稳定性和多视角协调性。实验表明，C³Editor在定性和定量指标上均优于现有主流基线方法，尤其在保持编辑细节一致性和用户可控性方面表现突出。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/82.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/edfef24af5b042048b236c7180cbcc2b.png)  
 C³Editor方法分为三个核心步骤：  
 
 1. **可控优化方向选择**：从多个视角的2D编辑结果中，用户选择一个最满意的GT视角及其编辑图像作为优化目标。用户还可对该GT图像进行手动微调，确保编辑精确表达意图。  
@@ -70,8 +70,8 @@ C³Editor方法分为三个核心步骤：
 3. **视角传播与多视角一致性（View Propagation and Inter-view Consistency）**：将视角按照与GT视角的距离排序，逐一对其他视角进行编辑微调，采用三部分损失（与GT视角的图像差异、相邻视角间编辑差异等）确保不同视角间的一致性。为防止GT信息丢失，设计了两个LoRA模块分别针对GT拟合和多视角一致性进行独立微调。最终，所有视角的编辑结果结合更新3D表示，实现高质量的3D编辑输出。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/83.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/84.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/b7704badf9aa4936a7c1e3652e7f5fb1.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/1eb50d71ad5941d1b2c634405650d940.png)  
 实验基于3D高效表示3D Gaussian Splatting和Instruct-Pix2Pix的2D扩散编辑模型，在MipNeRF-360和Instruct-NeRF-to-NeRF数据集上进行。定性对比显示，C³Editor显著减少了基线方法中多视角编辑冲突和错误，保证了面部细节、颜色和纹理的准确一致。定量指标方面，C³Editor在CLIP-Score（图像-文本和图像-图像）和FID分数上均优于GaussianEditor等基线，表明其编辑结果更符合文本意图且视觉质量更高。消融实验验证了视角传播机制和分离LoRA微调的有效性，前者显著提高了跨视角一致性，后者避免了GT信息在多视角微调中的丢失。此外，用户可通过手动编辑GT视角图像，实现对最终3D编辑结果的精准控制，增强了方法的灵活性和适用性。
 
 ### 通俗易懂  
@@ -82,11 +82,11 @@ C³Editor的核心想法是先找到一个你最满意的编辑视角（GT视角
 
 <u>http://arxiv.org/abs/2510.04822v1</u>  
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/85.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/943a28c674f748f1a50b41ac098b1498.png)  
 AvatarVTON是首个支持4D虚拟试穿的框架，能够从单张店内服装图片生成高保真度的可动画化数字人穿戴效果，支持自由姿态控制、多视角渲染及多样服装选择。与现有方法不同，它无需多视角服装采集或物理模拟先验，解决了基于单视图服装图像的动态服装交互难题。该框架包含两个核心模块：一是“互惠光流校正器”，通过无先验的光流修正策略稳定数字人装配过程，确保时间一致性；二是“非线性变形器”，将高斯表示分解为视角-姿态不变与特定分量，实现自适应非线性服装变形。AvatarVTON不仅提升了服装动态真实性和视觉多样性，也为AR/VR、游戏及数字人应用场景提供了强大支持。为公平评测，作者扩展了现有基线，建立了4D虚拟试穿的新基准。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/86.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/e20830fe5fe24e32aff96ddd6fc19417.png)  
 AvatarVTON框架主要包括三个部分：  
 
 1. **动画化数字人重建**：利用源风格网络（Source StyleUNet）将多视角多姿态的输入图像转为视角-姿态不变的高斯表示，实现数字人基础重建。  
@@ -95,8 +95,8 @@ AvatarVTON框架主要包括三个部分：
 此外，为解决训练中视角与姿态耦合导致的不连续性，提出了“互惠光流校正器（RFR）”，通过光流迭代优化将降质帧对齐至一致的数字人模型，显著提升时间连贯性。训练中结合像素级损失、感知损失、正则项及对抗损失，确保几何稳定性与纹理细节。该设计兼顾了3D结构感知与2D图像监督的优势，避免了多视角数据采集的昂贵成本。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/87.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/88.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/d973ea4c70144a16a90888afbe8ebb05.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/b63c5a3eb9474a02aed54d6640a51bd9.png)  
 实验涵盖多主体、多服装组合的配对与非配对设置，采用AvatarReX和ActorsHQ等公开3D人体数据集，结合DressCode和VITON-HD服装图像。与当前2D视频、2D图像及3D编辑等多类先进方法对比，AvatarVTON在PSNR、SSIM、LPIPS及CLIP相似度等指标上均表现优异，尤其在时间一致性和细节保真度方面优势明显。消融实验验证了非线性变形器和互惠光流校正器的关键作用：前者避免了几何畸变和纹理抖动，后者显著提升了跨视角姿态的连贯性。用户研究显示，AvatarVTON在纹理真实感、身份保持、视频连贯性及整体真实感四个维度均获得最高评价。跨服装类型试穿展示了框架对复杂变形的适应能力，尽管仍受限于训练数据的分布，整体表现优于现有方法。
 
 ### 通俗易懂  
@@ -108,8 +108,8 @@ AvatarVTON的核心在于两个创新模块，帮助数字人穿上不同衣服�
 <u>http://arxiv.org/abs/2510.03312v1</u>  
 <u>https://rongliu-leo.github.io/universal-beta-splatting/</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/93.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/94.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/9753872640194f43bb03ceef00afa443.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/af7e867980f44dc6abd427869995cb4c.png)  
 本文提出了Universal Beta Splatting（UBS），一种统一的辐射场渲染框架，将传统的3D高斯散射扩展到N维各向异性Beta核。与固定形状的高斯核不同，Beta核通过可学习的形状参数实现对空间、角度和时间维度的独立控制，能够自然地捕捉复杂光传输、各向异性视角依赖和场景动态，无需额外网络或颜色编码。UBS保持与现有高斯散射方法的兼容性，当Beta参数趋近于零时退化为高斯核，保证了性能下界和无缝替换。该方法通过学习的Beta参数实现了对场景属性的无监督可解释分解，如区分空间中的表面与纹理、角度上的漫反射与镜面反射，以及时间上的静态与动态元素。实验表明UBS在静态、视角依赖及动态场景中均优于现有方法，且具备实时渲染能力，确立了Beta核作为辐射场渲染的通用高效基元的地位。
 
 ### 方法 
@@ -117,8 +117,8 @@ AvatarVTON的核心在于两个创新模块，帮助数字人穿上不同衣服�
 UBS的核心是N维各向异性Beta核，参数包括均值向量µ、协方差矩阵Σ和形状参数b，后者通过指数变换控制每个维度的Beta核形态，实现从平坦到尖峰的灵活调整。空间维度共享一个Beta形状参数以保证几何一致性，非空间维度（视角、时间）则独立调节。为保持空间旋转不变性，UBS引入空间正交Cholesky参数化，将协方差分解为空间旋转矩阵与尺度矩阵的乘积，并结合跨维度相关矩阵，兼顾几何结构和跨维关系。针对高维条件渲染，提出Beta调制条件切片，通过对条件均值和协方差施加维度特异的Beta调制，解耦空间与非空间维度影响，实现高维Beta核到3D空间的有效映射。UBS还设计了乘积形式的不透明度门控，保证多维支持下的不透明度合理衰减。优化采用基于MCMC的核无关方法，辅以重建损失和正则化，结合专门的CUDA内核实现高效计算。该方法兼容现有高斯散射技术，并通过Beta参数的可解释性实现对场景空间、角度和时间属性的无监督分解。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/95.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/96.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/2117c74483cb49eb846a1cf89082d99a.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/6e078e107b194290bb04de47463d2404.png)  
 UBS在五个静态与动态数据集上进行了广泛评测，包括NeRF Synthetic、Mip-NeRF360、6DGS-PBR、D-NeRF和7DGS-PBR。静态场景中，UBS-6D在所有数据集均优于3DGS和6DGS，PSNR提升最高达+8.27dB，特别是在复杂体积散射和半透明材质上表现突出。动态场景中，UBS-7D相比4DGS和7DGS提升显著，PSNR最高增幅达+5.26dB，尤其在复杂时空角度相关的动态体积效果和心脏运动序列中效果明显。训练时间方面，UBS通过简化的参数设计和高效CUDA实现，在静态场景中训练速度提升最高近70%，动态场景中训练时间减少近50%。消融实验验证了空间正交Cholesky参数化、Beta调制条件切片及乘积形式不透明度门控对性能的关键贡献。整体来看，UBS不仅在视觉质量上取得领先，还在计算效率和模型简洁性上展现优势，支持实时渲染和多维场景的统一处理。
 
 ### 通俗易懂  
@@ -130,11 +130,11 @@ UBS的核心思想是用一种叫“Beta核”的数学工具来表示三维空�
 <u>http://arxiv.org/abs/2510.05097v1</u>  
 <u>https://www.lix.polytechnique.fr/vista/projects/2025_pulpmotion_courant/</u> 
 ### 概述 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/101.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/cebc69aeacca49a7b39063db9939e3ba.png)  
 本研究针对电影拍摄中的核心问题——演员动作与摄像机运动的协同生成，提出了首个基于文本条件的联合生成框架。该框架旨在同时生成高质量的人体动作和摄像机轨迹，确保屏幕上人物的合理构图与动作一致性。传统研究多将两者作为独立任务处理，忽视了两者在银幕空间中的紧密互动，导致生成结果在视觉表现上存在断层。为弥补这一缺陷，本文引入“屏幕构图”作为辅助模态，利用人体关键点在摄像机视角下的二维投影，作为连接动作与摄像机轨迹的桥梁，从而提升多模态生成的连贯性和准确性。此外，作者构建了PulpMotion数据集，包含丰富的动作、摄像机轨迹及文本描述，支持联合训练。实验结果表明，该方法在多种架构下均显著提升了动作与摄像机的协调性和文本对齐度，推动了该领域的技术进步。
 
 ### 方法 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/102.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/f195842f82c341c8bd3a8d7d046cfeb8.png)  
 本方法核心在于构建一个多模态联合潜空间，并通过辅助模态引导采样过程，实现动作与摄像机轨迹的协调生成。主要步骤包括：  
 
 1. **联合编码器设计**：将人体动作序列和摄像机轨迹序列通过联合编码器映射到共享潜空间，捕获两者的内在关联。  
@@ -144,8 +144,8 @@ UBS的核心思想是用一种叫“Beta核”的数学工具来表示三维空�
 整体框架兼容多种主流生成架构，具有良好的通用性和扩展性。
 
 ### 实验 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/103.jpg) 
-![](http://www.huyaoqi.ip-ddns.com:83/C%3A/Users/13756/Documents/GitHub/paper_daily_format/paper_daily_back_flask/result/2025-10-10/104.jpg)  
+![](https://img.blenet.top/file/paper-daily/aigc_research/a88282a5ab1f40ba9fe96564bc8e5169.png) 
+![](https://img.blenet.top/file/paper-daily/aigc_research/0569927b180e47b29342dd5c6eafa2d9.png)  
 实验基于新构建的PulpMotion数据集，涵盖丰富的人体动作、摄像机轨迹及文本描述，支持联合生成任务。评估指标包括屏幕构图的Frechet距离（Framing FD）、帧外率（Out-rate）、动作与文本的对齐度（TMR-Score）以及摄像机轨迹的覆盖率和一致性指标。实验比较了独立生成、联合生成、引入辅助模态生成及现有代表性方法ReDi。结果显示，辅助采样方法显著降低了构图错误率，提升了屏幕构图质量和文本对齐度，且在两种主流架构DiT和MAR上均表现出一致的优势。此外，辅助采样还在保持动作和摄像机轨迹生成质量的同时，增强了两者的协同效果。消融实验进一步确认了辅助模态引导采样权重对最终生成质量的关键影响，说明辅助采样在多模态生成中的有效性和灵活性。
 
 ### 通俗易懂  
